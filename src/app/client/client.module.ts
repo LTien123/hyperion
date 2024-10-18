@@ -41,7 +41,8 @@ import { CheckoutComponent } from './feature/checkout/checkout.component';
     CommonModule,
     ClientRoutingModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    
   ]
 })
 export class ClientModule { }

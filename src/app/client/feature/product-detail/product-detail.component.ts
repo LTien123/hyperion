@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { ProductDetailService } from '../../service/product-detail.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CartService } from '../../service/cart.service';
 import { CartItem } from '../../../dto/CartItem';
-import { Product, ProductColorDto, ProductHandlebarDto, ProductImageDto, ProductMaterialDto } from '../../../dto/Product';
+import { Product, ProductColorDto, ProductHandlebarDto, ProductMaterialDto } from '../../../dto/Product';
 import { ProductDetail, ProductImageResponse } from '../../../dto/ProductDetail';
 
 @Component({

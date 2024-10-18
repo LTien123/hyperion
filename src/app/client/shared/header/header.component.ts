@@ -26,7 +26,7 @@ export class HeaderComponent {
 
   ngOnInit(): void {
     this.getData()
-    this.cartService.getCartObservable().subscribe(cartItems => {
+    this.cartService.getCartObservable().subscribe((cartItems: CartItem[]) => {
       this.cart = cartItems;
       this.cart.forEach(cart => console.log(cart))
       this.totalPrice = this.cart.reduce((sum, item) => {
@@ -38,11 +38,11 @@ export class HeaderComponent {
 
 
   getData() {
-    this.headerService.getAllProductCategories().subscribe((res) => {
+    this.headerService.getAllProductCategories().subscribe((res: { result: { content: ProductCategories[]; }; }) => {
       this.categories = res.result.content;
       this.categories.forEach((result, index) => {
-        this.headerService.getAllProductSubCategories(result.id).subscribe((res) => {
-          res.result.content.forEach((result, index) => {
+        this.headerService.getAllProductSubCategories(result.id).subscribe((res: { result: { content: any[]; }; }) => {
+          res.result.content.forEach((result: ProductSubCategories, index: any) => {
             this.subCategories.push(result);
           })
         })
