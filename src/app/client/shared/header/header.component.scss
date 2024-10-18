@@ -1,0 +1,192 @@
+.warpper {
+    height: 7vh;
+    border-bottom: 1px solid black;
+}
+
+
+.product img{
+    max-height: 15vh;
+    height: 15vh;
+    object-fit: fill;
+}
+
+
+.cart {
+    padding: 3vh;
+    height: 100%;
+    width: 30rem;
+    position: fixed;
+    z-index: 2;
+    top: 0;
+    right: -30rem;
+    background-color: #ffffff;
+    transition: right 0.05s ease;
+
+    .row{
+        border-bottom: 1px dashed rgb(213, 213, 213);
+    }
+
+    .row:first-child{
+        border-top: 1px dashed rgb(213, 213, 213) ;
+    }
+}
+
+.total{
+    height: 7vh;
+}
+.clear{
+
+    height: 7vh;
+}
+.checkout-button{
+    height: 7vh;
+}
+.checkout-button:hover{
+    background-color: rgb(168, 168, 168);
+    cursor: pointer;
+}
+
+.clear:hover{
+    background-color: rgb(212, 212, 212);
+    cursor: pointer;
+}
+
+.cart.active {
+    right: 0;
+}
+
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+.logo {
+    font-size: 50px;
+    font-family: "Teko", sans-serif;
+}
+
+.menu {
+    border: none;
+}
+
+.language:hover {
+    cursor: pointer;
+}
+
+
+.sidenav {
+    height: 100%;
+    width: 20rem;
+    position: fixed;
+    z-index: 2;
+    top: 0;
+    left: -20rem;
+    background-color: #ffffff;
+    color: #000000;
+    transition: left 0.05s ease;
+}
+
+
+.sidenav.active {
+    left: 0;
+}
+
+.sidenav ul {
+    list-style-type: none;
+    padding: 0;
+
+}
+
+.sidenav ul li {
+    position: relative;
+    margin-top: 5px;
+}
+
+.sidenav ul li:first-child {
+    margin-top: 30px;
+}
+
+.sidenav ul li a {
+    color: #000000;
+    text-decoration: none;
+    display: block;
+    /* Make the link a block element */
+    transition: background-color 0.3s;
+    /* Hiệu ứng chuyển động */
+
+}
+
+.sidenav ul li a:hover {
+    cursor: pointer;
+    background-color: rgb(204, 204, 204);
+
+}
+
+
+.submenu {
+    overflow: auto;
+    display: none;
+    position: fixed;
+    left: 20rem;
+    top: 0;
+    height: 100%;
+    width: 20rem;
+    background-color: #ffffffc0;
+    z-index: 3;
+}
+
+.submenu::-webkit-scrollbar {
+    width: 0px;
+}
+
+
+
+.sidenav ul li:hover .submenu {
+    display: block;
+
+
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.2);
+    z-index: 1;
+}
+
+.model-info {
+
+    display: flex;
+    justify-content: center;
+    width: 20rem;
+    height: 10rem;
+    border: 1px solid rgb(235, 235, 235);
+    position: relative;
+
+
+    img {
+        object-fit: cover;
+        width: 19rem;
+        height: 10rem;
+
+    }
+
+    .title {
+        position: absolute;
+        top: 10%;
+        left: 10%;
+    }
+}
+
+
+
+
+
+.col-8{
+    margin-left: 4vh;
+}
+

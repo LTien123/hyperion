@@ -1,0 +1,102 @@
+<!-- <div class="warpper">
+    <div class="row m-2">
+        <div class="col-8">
+            <h2>Customer Information</h2>
+            <form [formGroup]="customerForm" (ngSubmit)="onSubmit()">
+                <div class="mb-3">
+                    <label for="customerName" class="form-label">Customer Name</label>
+                    <input type="text" id="customerName" formControlName="customerName" class="form-control">
+                    <div
+                        *ngIf="customerForm.get('customerName')?.invalid && (customerForm.get('customerName')?.touched || customerForm.get('customerName')?.dirty)">
+                        <small class="text-danger">Customer name is required.</small>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" id="email" formControlName="email" class="form-control">
+                    <div
+                        *ngIf="customerForm.get('email')?.invalid && (customerForm.get('email')?.touched || customerForm.get('email')?.dirty)">
+                        <small class="text-danger">Please enter a valid email.</small>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="phoneNumber" class="form-label">Phone Number</label>
+                    <input type="text" id="phoneNumber" formControlName="phoneNumber" class="form-control">
+                    <div
+                        *ngIf="customerForm.get('phoneNumber')?.invalid && (customerForm.get('phoneNumber')?.touched || customerForm.get('phoneNumber')?.dirty)">
+                        <small class="text-danger">Phone number is required.</small>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="address" class="form-label">Address</label>
+                    <input type="text" id="address" formControlName="address" class="form-control">
+                    <div
+                        *ngIf="customerForm.get('address')?.invalid && (customerForm.get('address')?.touched || customerForm.get('address')?.dirty)">
+                        <small class="text-danger">Address is required.</small>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="note" class="form-label">Note</label>
+                    <textarea id="note" formControlName="note" class="form-control"></textarea>
+                </div>
+
+                <div class="mb-3">
+                    <label for="paymentMethod" class="form-label">Payment Method</label>
+                    <div id="paymentMethod" class="form-group d-flex justify-content-around">
+                        <div *ngFor="let option of paymentOptions" class="form-check">
+                            <input class="form-check-input" type="radio" [value]="option.method"
+                                formControlName="paymentMethod" [id]="option.method">
+                            <label class="form-check-label" [for]="option.method"><span
+                                    [innerHTML]="option.logo"></span> {{ option.method }}</label>
+                        </div>
+                    </div>
+                    <div
+                        *ngIf="customerForm.get('paymentMethod')?.invalid && (customerForm.get('paymentMethod')?.touched || customerForm.get('paymentMethod')?.dirty)">
+                        <small class="text-danger">Payment method is required.</small>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary" [disabled]="customerForm.invalid">Submit</button>
+            </form>
+        </div>
+        <div class="col-4">
+            <h2>Your Cart</h2>
+            <div class="cart">
+                <div class="row mt-1 py-1" *ngFor="let item of cart">
+                    <div class="info-top d-flex ">
+                        <div class="product col-4">
+                            <img [src]=item.product.thumbnailUrl alt="">
+                        </div>
+                        <div class="product col-8 d-flex flex-column justify-content-between">
+                            <div class="name"> {{item.product.name}}</div>
+                            <div class="price">{{item.product.price}}$$</div>
+                        </div>
+                    </div>
+
+                    <div class="info-bottom d-flex mt-1">
+                        <div class="col-4 d-flex flex-column align-items-center justify-content-center">
+                            Amount: {{item.amount}}
+                        </div>
+                        <div class="col-8">
+                            <div class="handlebar" *ngIf="item.product.productHandlebarDto">Handlebar:
+                                {{item.product.productHandlebarDto.style}}</div>
+                            <div class="color">Color: {{item.product.productColorDto.color}}</div>
+                            <div class="material" *ngIf="item.product.productMaterialDto">Material:
+                                {{item.product.productMaterialDto.material}}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="total d-flex justify-content-between  align-items-center">
+                    <div class="text">Subtotal price: </div>
+                    <div class="total-price">{{totalPrice}} </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div> -->
