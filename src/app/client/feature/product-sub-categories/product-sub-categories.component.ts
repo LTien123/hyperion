@@ -10,7 +10,7 @@ import { ProductSubCategories } from '../../../dto/ProductSubCategories';
 })
 export class ProductSubCategoriesComponent implements OnInit {
   productCategoryName: string = "";
-  productSubCategories: ProductSubCategories[] = [];
+  productSubCategories: ProductSubCategories[] | undefined;
   constructor(private router: Router, private route: ActivatedRoute, private productSubCategoriesService: ProductSubCategoriesService) { }
 
   ngOnInit(): void {
@@ -23,11 +23,11 @@ export class ProductSubCategoriesComponent implements OnInit {
   getAllProductSubCategories() {
     this.productSubCategoriesService.getProductSubCategoryByName(this.productCategoryName).subscribe({
       next: (res) => {
-        if (res.result.length === 0) {
-          this.router.navigate(['not-found'])
-        } else {
-          this.productSubCategories = res.result;
-        }
+       this.productSubCategories = res.result;
+       const foundSubCategory = this.productSubCategories.find(subCategoy => subCategoy.productCategoryDto.name == this.productCategoryName);
+       if(!foundSubCategory){
+        this.router.navigate(['not-found'],{ replaceUrl: true });
+       }
       },
       error: (err) => {
       }

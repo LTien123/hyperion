@@ -27,14 +27,6 @@ export class ProductComponent implements OnInit {
   }
 
   getData() {
-    // this.productService.getProductsToShow(this.productSubCategoryName, this.productPage, this.productSize).subscribe({
-    //   next: (res) => {
-    //    this.product = res.result.content;
-    //    console.log(res.result.content)
-
-    //   }
-    // })
-
     this.productService.findAllProductBySubCategoryName(this.productSubCategoryName, this.productPage, this.productSize).subscribe({
       next: (res) => {
         this.products = res.result.content;
