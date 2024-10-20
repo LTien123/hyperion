@@ -60,7 +60,7 @@ export class HomeComponent implements OnInit {
         })
       }
       //get all bikes
-      const bikeId = productCategories.find(item =>item.name === "Bike")?.id;
+      const bikeId = productCategories.find(item =>item.name === "Bikes")?.id;
       if(bikeId){
         this.homeService.getAllProductSubCategories(bikeId).subscribe((res) =>{
           this.bikeCategories = res.result.content;
