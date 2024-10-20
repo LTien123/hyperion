@@ -1,4 +1,4 @@
-<!-- <div class="warpper">
+<div class="warpper">
     <div class="row m-2">
         <div class="col-8">
             <h2>Customer Information</h2>
@@ -69,11 +69,11 @@
                 <div class="row mt-1 py-1" *ngFor="let item of cart">
                     <div class="info-top d-flex ">
                         <div class="product col-4">
-                            <img [src]=item.product.thumbnailUrl alt="">
+                            <img [src]=item.productDetail.productImageResponseList[0].url alt="">
                         </div>
                         <div class="product col-8 d-flex flex-column justify-content-between">
-                            <div class="name"> {{item.product.name}}</div>
-                            <div class="price">{{item.product.price}}$$</div>
+                            <div class="name"> {{item.productDetail.productDto.name}}</div>
+                            <div class="price">{{item.productDetail.productDto.price}}$$</div>
                         </div>
                     </div>
 
@@ -82,11 +82,11 @@
                             Amount: {{item.amount}}
                         </div>
                         <div class="col-8">
-                            <div class="handlebar" *ngIf="item.product.productHandlebarDto">Handlebar:
-                                {{item.product.productHandlebarDto.style}}</div>
-                            <div class="color">Color: {{item.product.productColorDto.color}}</div>
-                            <div class="material" *ngIf="item.product.productMaterialDto">Material:
-                                {{item.product.productMaterialDto.material}}</div>
+                            <div class="handlebar" *ngIf="item.productDetail.productHandlebarDto">Handlebar:
+                                {{item.productDetail.productHandlebarDto.style}}</div>
+                            <div class="color">Color: {{item.productDetail.productColorDto.color}}</div>
+                            <div class="material" *ngIf="item.productDetail.productMaterialDto">Material:
+                                {{item.productDetail.productMaterialDto.material}}</div>
                         </div>
                     </div>
                 </div>
@@ -99,4 +99,4 @@
         </div>
     </div>
 
-</div> -->
+</div>

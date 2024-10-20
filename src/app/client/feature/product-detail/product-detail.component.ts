@@ -13,25 +13,25 @@ import { ProductDetail, ProductImageResponse } from '../../../dto/ProductDetail'
 })
 export class ProductDetailComponent {
   selectedHandlebar: string | undefined;
-  selectedColor: string = "";
+  selectedColor: string | undefined;
   selectedMaterial: string | undefined;
   counter: number = 1;
-  selectedImg: string = "";
-  categoryName!: string;
-  subCategoryName!: string;
+  selectedImg: string | undefined;
+  categoryName: string | undefined;
+  subCategoryName: string | undefined;
   currentProductDetail:ProductDetail | undefined;
-  productName: string = "";
+  productName: string | undefined;
   product: Product | undefined
   productDetail: ProductDetail[] = [];
   productColors: ProductColorDto[] = [];
-  productHandlebars: ProductHandlebarDto[] = [];
-  productMaterials: ProductMaterialDto[] = [];
+  productHandlebars: ProductHandlebarDto[] |undefined;
+  productMaterials: ProductMaterialDto[] | undefined;
   filteredImages:ProductImageResponse[] | undefined;
 
   constructor(private productDetailService: ProductDetailService, private cartService: CartService, private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit(): void {
-    this.route.params.subscribe((param: { [x: string]: string; }) => {
+    this.route.params.subscribe(param  => {
       this.categoryName = param['productCategoryName'];
       this.subCategoryName = param['productSubCategoryName'];
       this.productName = param['productName'];
@@ -42,14 +42,15 @@ export class ProductDetailComponent {
   }
 
   getData() {
+    if(this.productName)
     this.productDetailService.getProductDetailByProductName(this.productName).subscribe({
       next: (res: { result: ProductDetail[]; }) => {
         this.productDetail = res.result;
-        if (this.productDetail[0].productHandlebarDto != null)
-          this.selectedHandlebar = this.productDetail[0].productHandlebarDto.style;
-        if (this.productDetail[0].productMaterialDto != null)
-          this.selectedMaterial = this.productDetail[0].productMaterialDto.material;
-        this.selectedColor = this.productDetail[0].productColorDto.color;
+        if (this.productDetail[0].productHandlebarDto)
+          this.selectedHandlebar = this.productDetail[0]?.productHandlebarDto.style;
+        if (this.productDetail[0].productMaterialDto )
+          this.selectedMaterial = this.productDetail[0]?.productMaterialDto?.material;
+        this.selectedColor = this.productDetail[0]?.productColorDto.color;
         this.selectedImg = this.productDetail.filter(product =>
           product.productHandlebarDto?.style === this.selectedHandlebar &&
           product.productColorDto?.color === this.selectedColor
@@ -58,7 +59,7 @@ export class ProductDetailComponent {
       }
     })
     
-
+    if(this.productName)
     this.productDetailService.getProductByProductName(this.productName).subscribe({
       next: (res: { result: Product | undefined; }) => {
         this.product = res.result;

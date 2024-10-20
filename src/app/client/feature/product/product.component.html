@@ -22,7 +22,7 @@
                                 <h6>{{ item.weight }} kg</h6>
                             </div>
                         </div>
-                        <div *ngIf="item.productDetailDtoList[0].productMaterialDto">
+                        <div *ngIf="item.productDetailDtoList[0]?.productMaterialDto">
                             <div class="col-6 d-flex flex-column justify-content-center align-items-center">
                                 <!-- Hiển thị Material -->
                                 Material:
