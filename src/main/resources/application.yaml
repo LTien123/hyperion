@@ -1,0 +1,20 @@
+spring:
+  datasource:
+    username: root
+    password:
+    url: "jdbc:mysql://localhost:3306/hype"
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+  servlet:
+    multipart:
+      enabled: true
+      max-request-size: 10MB
+      max-file-size: 10MB
+
+jwt:
+  signerKey: "u1w4lfbIlOqekNYgl0FMfLqEMeICbkOA8lHyyJm9iXU/ZH5uxuz0Wle1+lNOm3Yi"
+  valid-duration: 2000
+  refreshable-duration: 4000
+
