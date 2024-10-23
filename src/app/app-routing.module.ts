@@ -4,9 +4,9 @@ import { NotFoundComponent } from './not-found/not-found.component';
 
 const routes: Routes = [
   { path: '', loadChildren: () => import('./client/client.module').then(m => m.ClientModule) },
+  { path: 'admin', loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule) },
   { path: 'not-found', component: NotFoundComponent },
   { path: '**', redirectTo: 'not-found', pathMatch: 'full' },
-  
 ];
 
 @NgModule({

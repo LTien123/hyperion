@@ -3,6 +3,7 @@ export interface Blogs {
     title: string;
     subTitle: string;
     createdAt: Date;
+    updatedAt: Date |null;
     description: string;
     thumbnailUrl: string;
     thumbnailPublicId: string;

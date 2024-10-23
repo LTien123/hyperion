@@ -21,19 +21,31 @@ export class BlogComponent implements OnInit {
     this.route.params.subscribe(param => {
       this.blogId = +param['blogId'];
       this.blogCategoryName = param['blogCategoryName'];
-      // this.getNewsById(this.newsId);
       this.getBlogById(this.blogId);
     })
   }
 
+  // res => {
+  //   this.blogDetail = res.result;
+  //   if (this.blogDetail.blogCategoryDto.name != this.blogCategoryName) {
+  //     this.router.navigate(['not-found'],);
+  //   }
+  //   const rawDescription = this.blogDetail.description;
+  //   this.description = this.sanitizer.bypassSecurityTrustHtml(rawDescription);
+  // }
+
   getBlogById(id: number) {
-    this.blogService.getBlogById(id).subscribe(res => {
-      this.blogDetail = res.result;
-      if (this.blogDetail.blogCategoryDto.name != this.blogCategoryName) {
-        this.router.navigate(['not-found']);
+    this.blogService.getBlogById(id).subscribe({
+      next: (res)=>{
+        this.blogDetail = res.result;
+        if (this.blogDetail.blogCategoryDto.name != this.blogCategoryName) {
+          this.router.navigate(['not-found'], { replaceUrl: true });
+          const rawDescription = this.blogDetail.description;
+          this.description = this.sanitizer.bypassSecurityTrustHtml(rawDescription);
+      }},
+      error: ()=>{
+        this.router.navigate(['not-found'], { replaceUrl: true });
       }
-      const rawDescription = this.blogDetail.description;
-      this.description = this.sanitizer.bypassSecurityTrustHtml(rawDescription);
     })
   }
 }

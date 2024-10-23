@@ -9,7 +9,7 @@ import { Blogs } from '../../../dto/Blog';
 })
 export class NewsComponent {
   constructor(private newService: NewsService) { }
-  targetPage: number | undefined;
+  targetPage: number | undefined | null;
   news: Blogs[] = [];
   totalPages!: number;
   currentPage: number = 1;
@@ -41,13 +41,14 @@ export class NewsComponent {
   changePage(page: number) {
     this.currentPage = page;
     this.getAllNews();
+  
 
   }
 
   goToPage() {
     if (this.targetPage && this.targetPage >= 1 && this.targetPage <= this.totalPages) {
+      this.currentPage = this.targetPage;
       this.changePage(this.targetPage);
-      this.targetPage == null;
     } else {
       alert('please enter correctly');
     }

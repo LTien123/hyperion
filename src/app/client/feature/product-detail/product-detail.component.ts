@@ -19,19 +19,19 @@ export class ProductDetailComponent {
   selectedImg: string | undefined;
   categoryName: string | undefined;
   subCategoryName: string | undefined;
-  currentProductDetail:ProductDetail | undefined;
+  currentProductDetail: ProductDetail | undefined;
   productName: string | undefined;
   product: Product | undefined
   productDetail: ProductDetail[] = [];
   productColors: ProductColorDto[] = [];
-  productHandlebars: ProductHandlebarDto[] |undefined;
+  productHandlebars: ProductHandlebarDto[] | undefined;
   productMaterials: ProductMaterialDto[] | undefined;
-  filteredImages:ProductImageResponse[] | undefined;
+  filteredImages: ProductImageResponse[] | undefined;
 
   constructor(private productDetailService: ProductDetailService, private cartService: CartService, private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit(): void {
-    this.route.params.subscribe(param  => {
+    this.route.params.subscribe(param => {
       this.categoryName = param['productCategoryName'];
       this.subCategoryName = param['productSubCategoryName'];
       this.productName = param['productName'];
@@ -42,30 +42,30 @@ export class ProductDetailComponent {
   }
 
   getData() {
-    if(this.productName)
-    this.productDetailService.getProductDetailByProductName(this.productName).subscribe({
-      next: (res: { result: ProductDetail[]; }) => {
-        this.productDetail = res.result;
-        if (this.productDetail[0].productHandlebarDto)
-          this.selectedHandlebar = this.productDetail[0]?.productHandlebarDto.style;
-        if (this.productDetail[0].productMaterialDto )
-          this.selectedMaterial = this.productDetail[0]?.productMaterialDto?.material;
-        this.selectedColor = this.productDetail[0]?.productColorDto.color;
-        this.selectedImg = this.productDetail.filter(product =>
-          product.productHandlebarDto?.style === this.selectedHandlebar &&
-          product.productColorDto?.color === this.selectedColor
-        )[0]?.productImageResponseList[0]?.url || "";
-        this.getFilteredImages();
-      }
-    })
-    
-    if(this.productName)
-    this.productDetailService.getProductByProductName(this.productName).subscribe({
-      next: (res: { result: Product | undefined; }) => {
-        this.product = res.result;
+    if (this.productName)
+      this.productDetailService.getProductDetailByProductName(this.productName).subscribe({
+        next: (res: { result: ProductDetail[]; }) => {
+          this.productDetail = res.result;
+          if (this.productDetail[0]?.productHandlebarDto)
+            this.selectedHandlebar = this.productDetail[0]?.productHandlebarDto?.style;
+          if (this.productDetail[0]?.productMaterialDto)
+            this.selectedMaterial = this.productDetail[0]?.productMaterialDto?.material;
+          this.selectedColor = this.productDetail[0]?.productColorDto.color;
+          this.selectedImg = this.productDetail.filter(product =>
+            product.productHandlebarDto?.style === this.selectedHandlebar &&
+            product.productColorDto?.color === this.selectedColor
+          )[0]?.productImageResponseList[0]?.url || "";
+          this.getFilteredImages();
+        }
+      })
 
-      }
-    })
+    if (this.productName)
+      this.productDetailService.getProductByProductName(this.productName).subscribe({
+        next: (res: { result: Product | undefined; }) => {
+          this.product = res.result;
+
+        }
+      })
   }
 
   addToCart(): void {
@@ -89,7 +89,7 @@ export class ProductDetailComponent {
   selectHandlebar(handlebar: string) {
     this.selectedHandlebar = handlebar;
     this.updateImage();
-    this.getFilteredImages() 
+    this.getFilteredImages()
   }
 
   selectMaterial(material: string) {
@@ -99,8 +99,8 @@ export class ProductDetailComponent {
   selectColor(color: string) {
     this.selectedColor = color;
     this.updateImage();
-    this.getFilteredImages() 
-    
+    this.getFilteredImages()
+
   }
 
   selectImg(url: string) {
@@ -119,9 +119,9 @@ export class ProductDetailComponent {
   getFilteredImages() {
     this.filteredImages = this.productDetail.filter(productDetail =>
       productDetail.productHandlebarDto?.style == this.selectedHandlebar &&
-      productDetail.productColorDto?.color == this.selectedColor 
+      productDetail.productColorDto?.color == this.selectedColor
     ).flatMap(product => product.productImageResponseList || []);
- 
+
   }
 
   increase() {

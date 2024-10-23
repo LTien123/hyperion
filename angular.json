@@ -40,7 +40,8 @@
             "assets": [
               {
                 "glob": "**/*",
-                "input": "public"
+                "input": "node_modules/tinymce",
+                "output": "/assets/tinymce/"
               }
             ],
             "styles": [
