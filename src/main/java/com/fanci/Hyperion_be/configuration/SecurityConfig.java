@@ -29,7 +29,6 @@ import java.util.List;
 @EnableWebMvc
 public class SecurityConfig {
     private final JwtDecoder jwtDecoder;
-    //uwu
 //    private final String[] PUBLIC_ENDPOINTS = {"/auth/token", "/auth/introspect", "auth/logout", "/auth/refresh", "/user", "/image", "/product", "/product/page"};
 
     public SecurityConfig(JwtDecoder jwtDecoder) {
