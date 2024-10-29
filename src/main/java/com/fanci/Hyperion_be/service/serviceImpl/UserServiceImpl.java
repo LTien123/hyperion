@@ -60,7 +60,9 @@ public class UserServiceImpl implements UserService {
 
         user.setIsActive(true);
 
+
         uploadService.uploadThumbnail(user, request.getImage());
+
 
         user.setRoles(request.getRoleId().stream().map(roleId -> roleRepository.findById(roleId).orElseThrow(() -> new AppException(ErrorCode.ROLE_ID_NOT_FOUND))).collect(Collectors.toSet()));
         return toUserResponse(userRepository.save(user));
