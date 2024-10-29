@@ -13,6 +13,8 @@ import { BillComponent } from './feature/bill/bill.component';
 import { CreateBlogComponent } from './feature/blog/create-blog/create-blog.component';
 import { EditorModule } from '@tinymce/tinymce-angular';
 import { UpdateBlogComponent } from './feature/blog/update-blog/update-blog.component';
+import { SignUpComponent } from './feature/sign-up/sign-up.component';
+import { UsersComponent } from './feature/users/users.component';
 
 
 
@@ -27,6 +29,8 @@ import { UpdateBlogComponent } from './feature/blog/update-blog/update-blog.comp
     BillComponent,
     CreateBlogComponent,
     UpdateBlogComponent,
+    SignUpComponent,
+    UsersComponent
   ],
   imports: [
     CommonModule,

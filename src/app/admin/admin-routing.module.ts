@@ -6,8 +6,10 @@ import { BlogComponent } from './feature/blog/blog.component';
 import { ProductComponent } from './feature/product/product.component';
 import { BillComponent } from './feature/bill/bill.component';
 import { NotificationComponent } from './feature/notification/notification.component';
-import { ProfileComponent } from './feature/profile/profile.component';
+
 import { CreateBlogComponent } from './feature/blog/create-blog/create-blog.component';
+import { SignUpComponent } from './feature/sign-up/sign-up.component';
+import { UsersComponent } from './feature/users/users.component';
 
 const routes: Routes = [{
   path: '', component: LayoutComponent, children: [
@@ -18,7 +20,8 @@ const routes: Routes = [{
     { path: 'product', component: ProductComponent },
     { path: 'bill', component: BillComponent },
     { path: 'notification', component: NotificationComponent },
-    { path: 'profile', component: ProfileComponent }
+    { path: 'sign-up', component: SignUpComponent },
+    { path: 'users', component: UsersComponent }
   ]
 }
 

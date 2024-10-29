@@ -17,13 +17,13 @@
     <div class="notification menu" [routerLink]="['notification']">
         notification
     </div>
-    <div class="profile menu" [routerLink]="['profile']">
-        profile
+    <div class="profile menu" [routerLink]="['users']">
+        users
     </div>
-    <div class="signup menu" >
+    <div class="signup menu" [routerLink]="['sign-up']">
         sign up
     </div>
-    <div class="logout menu" >
+    <div class="logout menu" (click)="logout()">
         log out
     </div>
 </div>
