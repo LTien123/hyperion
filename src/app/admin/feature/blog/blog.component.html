@@ -29,7 +29,7 @@
                 <td>{{blog.createdAt}}</td>
                 <td>{{blog.updatedAt}}</td>
                 <td>{{blog.userDto.username}}</td>
-                <td><button>update</button> <button>delete</button></td>
+                <td><button [routerLink]="['update',blog.id]">update</button> <button (click)="deleteBlogById(blog.id)" >delete</button></td>
             </tr>
         </table>
 

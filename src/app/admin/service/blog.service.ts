@@ -15,7 +15,7 @@ export class BlogService {
   constructor(private http: HttpClient) { }
   private url = enviroment.apiUrl;
 
-  getBlogById(id:number): Observable<ApiResponse<Blogs>> {
+  getBlogById(id: number): Observable<ApiResponse<Blogs>> {
     return this.http.get<ApiResponse<Blogs>>(`${this.url}/blog/${id}`)
   }
 
@@ -23,14 +23,22 @@ export class BlogService {
     return this.http.get<ApiResponse<BlogCategories[]>>(`${this.url}/blog-categories`);
   }
 
-  getAllBlogs(page:number, size:number):Observable<ApiResponse<PagedResult<Blogs[]>>>{
-    return  this.http.get<ApiResponse<PagedResult<Blogs[]>>>(`${this.url}/blog/all?page=${page}&size=${size}`)
+  getAllBlogs(page: number, size: number): Observable<ApiResponse<PagedResult<Blogs[]>>> {
+    return this.http.get<ApiResponse<PagedResult<Blogs[]>>>(`${this.url}/blog/all?page=${page}&size=${size}`)
   }
 
-  addNewBlog(formData:FormData):Observable<ApiResponse<Blogs>>{
+  addNewBlog(formData: FormData): Observable<ApiResponse<Blogs>> {
     return this.http.post<ApiResponse<Blogs>>(`${this.url}/blog`, formData);
   }
- 
 
-  
+  deleteBlogById(id: number): Observable<ApiResponse<any>> {
+    return this.http.delete<ApiResponse<any>>(`${this.url}/blog/${id}`)
+  }
+
+  updateBlogById(id: number, formData:FormData): Observable<ApiResponse<Blogs>> {
+    return this.http.put<ApiResponse<Blogs>>(`${this.url}/blog/${id}`,formData)
+  }
+
+
+
 }

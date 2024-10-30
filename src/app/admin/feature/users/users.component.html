@@ -1,0 +1,36 @@
+<div class="warpper">
+    <div class="header d-flex justify-content-between ">
+        <h1>ALL USERS</h1>
+        <div class="search me-5" >
+            <input type="search" name="" id="">
+
+        </div>
+        
+
+    </div>
+
+    <div class="body mt-3">
+        <table class="users">
+            <tr>
+                <th>ID</th>
+                <th>Username</th>
+                <th>Full name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Role</th>
+                <th>Action</th>
+            </tr>
+            <tr *ngFor="let user of Users">
+                <td>{{user.id}}</td>
+                <td>{{user.username}}</td>
+                <td>{{user.fullName}}</td>
+                <td>{{user.email}}</td>
+                <td>{{user.phone}}</td>
+                <td><div *ngFor="let role of user.roleDtos">{{role.roleName}}</div></td>
+                <td><button [routerLink]="['update',user.id]">update</button> <button (click)="deleteUser(user.id)">delete</button></td>
+            </tr>
+        </table>
+
+        
+    </div>
+</div>

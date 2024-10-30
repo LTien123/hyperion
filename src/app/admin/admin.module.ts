@@ -15,6 +15,7 @@ import { EditorModule } from '@tinymce/tinymce-angular';
 import { UpdateBlogComponent } from './feature/blog/update-blog/update-blog.component';
 import { SignUpComponent } from './feature/sign-up/sign-up.component';
 import { UsersComponent } from './feature/users/users.component';
+import { UpdateUserComponent } from './feature/users/update-user/update-user.component';
 
 
 
@@ -30,7 +31,8 @@ import { UsersComponent } from './feature/users/users.component';
     CreateBlogComponent,
     UpdateBlogComponent,
     SignUpComponent,
-    UsersComponent
+    UsersComponent,
+    UpdateUserComponent
   ],
   imports: [
     CommonModule,

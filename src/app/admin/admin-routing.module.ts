@@ -10,6 +10,8 @@ import { NotificationComponent } from './feature/notification/notification.compo
 import { CreateBlogComponent } from './feature/blog/create-blog/create-blog.component';
 import { SignUpComponent } from './feature/sign-up/sign-up.component';
 import { UsersComponent } from './feature/users/users.component';
+import { UpdateUserComponent } from './feature/users/update-user/update-user.component';
+import { UpdateBlogComponent } from './feature/blog/update-blog/update-blog.component';
 
 const routes: Routes = [{
   path: '', component: LayoutComponent, children: [
@@ -17,11 +19,13 @@ const routes: Routes = [{
     { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
     { path: 'blog', component: BlogComponent },
     { path: 'blog/create', component: CreateBlogComponent },
+    { path: 'blog/update/:id', component: UpdateBlogComponent },
     { path: 'product', component: ProductComponent },
     { path: 'bill', component: BillComponent },
     { path: 'notification', component: NotificationComponent },
     { path: 'sign-up', component: SignUpComponent },
-    { path: 'users', component: UsersComponent }
+    { path: 'users', component: UsersComponent },
+    { path: 'users/update/:id', component: UpdateUserComponent }
   ]
 }
 

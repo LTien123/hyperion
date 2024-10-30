@@ -31,6 +31,19 @@ export class BlogComponent implements OnInit {
       }
     })
   }
+
+  deleteBlogById(id:number){
+    this.blogService.deleteBlogById(id).subscribe({
+      next:(res)=>{
+        alert("deleted successfully");
+        this.getAllBlogs();
+      },
+      error:()=>{
+        alert("can't delete, check again");
+      }
+    })
+  }
+
   getPageAmount(): any[] {
     if (this.totalPages)
       for (let i = 1; i <= this.totalPages; i++) {
