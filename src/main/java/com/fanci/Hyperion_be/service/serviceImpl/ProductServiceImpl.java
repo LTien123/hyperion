@@ -2,6 +2,7 @@ package com.fanci.Hyperion_be.service.serviceImpl;
 
 import com.fanci.Hyperion_be.dto.*;
 import com.fanci.Hyperion_be.dto.request.CreateNewProductRequest;
+import com.fanci.Hyperion_be.dto.request.UpdateProductRequest;
 import com.fanci.Hyperion_be.dto.response.ProductResponse;
 import com.fanci.Hyperion_be.entity.Product;
 import com.fanci.Hyperion_be.entity.ProductDetail;
@@ -33,8 +34,8 @@ public class ProductServiceImpl implements ProductService {
 
     private final ProductMapper productMapper;
     private final ProductDetailMapper productDetailMapper;
-    private final ProductSubCategoryDtoMapper productSubCategoryDtoMapper;
-    private final ProductCategoryDtoMapper productCategoryDtoMapper;
+    private final ProductSubCategoryMapper productSubCategoryMapper;
+    private final ProductCategoryMapper productCategoryMapper;
     private final ProductColorMapper productColorMapper;
     private final ProductMaterialMapper productMaterialMapper;
     private final ProductHandlebarMapper productHandlebarMapper;
@@ -47,6 +48,11 @@ public class ProductServiceImpl implements ProductService {
     public Page<ProductResponse> findAllProductByProductSubCategoryName(String productSubCategoryName, int page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt"));
         return productRepository.findAllProductByProductSubCategoryNameWithPagination(productSubCategoryName, pageable).map(this::toProductResponse);
+    }
+
+    @Override
+    public List<ProductResponse> findAllProductByProductSubCategoryId(Long id) {
+        return productRepository.findAllProductByProductSubCategoryId(id).stream().map(this::toProductResponse).toList();
     }
 
     @Override
@@ -71,30 +77,48 @@ public class ProductServiceImpl implements ProductService {
         return toProductResponse(newProduct);
     }
 
+    @Override
+    public ProductResponse updateProductById(UpdateProductRequest request, Long id) throws IOException {
+        Product product = productRepository.findProductByProductId(id).orElseThrow(() -> new AppException(ErrorCode.PRODUCT_ID_NOT_FOUND));
+        productMapper.updateProduct(request, product);
+        uploadService.uploadThumbnail(product, request.getThumbnail());
+        return toProductResponse(productRepository.save(product));
+
+    }
+
+    @Override
+    public void deleteProductById(Long id) {
+        Product product = productRepository.findProductByProductId(id).orElseThrow(() -> new AppException(ErrorCode.PRODUCT_ID_NOT_FOUND));
+        product.setIsActive(false);
+        productRepository.save(product);
+    }
+
     private ProductResponse toProductResponse(Product product) {
         var productResponse = productMapper.toProductResponse(product);
         //add sub category and category
-        productResponse.setProductSubCategoryDto(productSubCategoryDtoMapper.toProductSubCategoryDto(product.getProductSubCategory()));
-        productResponse.setProductCategoryDto(productCategoryDtoMapper.toProductCategoryDto(product.getProductSubCategory().getProductCategory()));
+        productResponse.setProductSubCategoryDto(productSubCategoryMapper.toProductSubCategoryDto(product.getProductSubCategory()));
+        productResponse.setProductCategoryDto(productCategoryMapper.toProductCategoryDto(product.getProductSubCategory().getProductCategory()));
 
         //add product detail dto
 
         if (product.getProductDetails() != null) {
             List<ProductDetailDto> productDetailDtoList = new ArrayList<>();
             for (ProductDetail p : product.getProductDetails()) {
-
+                if (p.isActive()){
                 ProductColorDto productColorDto = productColorMapper.toProductColorDto(p.getProductColor());
                 ProductHandlebarDto productHandlebarDto = productHandlebarMapper.toProductHandlebarDto(p.getProductHandlebar());
                 ProductMaterialDto productMaterialDto = productMaterialMapper.toProductMaterialDto(p.getProductMaterial());
                 List<ProductImageDto> productImageDtoList = productImageMapper.toProductImageDtoList(p.getProductImages());
+                    ProductDetailDto productDetailDto = productDetailMapper.toProductDetailDto(p);
+                    productDetailDto.setActive(p.isActive());
+                    productDetailDto.setProductColorDto(productColorDto);
+                    productDetailDto.setProductHandlebarDto(productHandlebarDto);
+                    productDetailDto.setProductMaterialDto(productMaterialDto);
+                    productDetailDto.setProductImageDtoList(productImageDtoList);
+                    productDetailDtoList.add(productDetailDto);
+                }
 
-                ProductDetailDto productDetailDto = productDetailMapper.toProductDetailDto(p);
 
-                productDetailDto.setProductColorDto(productColorDto);
-                productDetailDto.setProductHandlebarDto(productHandlebarDto);
-                productDetailDto.setProductMaterialDto(productMaterialDto);
-                productDetailDto.setProductImageDtoList(productImageDtoList);
-                productDetailDtoList.add(productDetailDto);
             }
             productResponse.setProductDetailDtoList(productDetailDtoList);
         }

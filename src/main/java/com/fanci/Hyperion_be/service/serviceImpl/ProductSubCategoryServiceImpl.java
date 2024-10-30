@@ -5,7 +5,7 @@ import com.fanci.Hyperion_be.dto.response.ProductSubCategoryResponse;
 import com.fanci.Hyperion_be.entity.ProductSubCategory;
 import com.fanci.Hyperion_be.exception.AppException;
 import com.fanci.Hyperion_be.exception.ErrorCode;
-import com.fanci.Hyperion_be.mapper.ProductCategoryDtoMapper;
+import com.fanci.Hyperion_be.mapper.ProductCategoryMapper;
 import com.fanci.Hyperion_be.mapper.ProductSubCategoryMapper;
 import com.fanci.Hyperion_be.repository.ProductCategoryRepository;
 import com.fanci.Hyperion_be.repository.ProductSubCategoryRepository;
@@ -25,7 +25,7 @@ public class ProductSubCategoryServiceImpl implements ProductSubCategoryService 
     private final ProductSubCategoryRepository productSubCategoryRepository;
     private final ProductCategoryRepository productCategoryRepository;
     private final ProductSubCategoryMapper productSubCategoryMapper;
-    private final ProductCategoryDtoMapper productCategoryDtoMapper;
+    private final ProductCategoryMapper productCategoryMapper;
     private final UploadService uploadService;
 
     @Override
@@ -42,7 +42,7 @@ public class ProductSubCategoryServiceImpl implements ProductSubCategoryService 
 
     private ProductSubCategoryResponse toProductSubCategoryResponse(ProductSubCategory productSubCategory) {
         ProductSubCategoryResponse categoryResponse = productSubCategoryMapper.toSubCategoryResponse(productSubCategory);
-        categoryResponse.setProductCategoryDto(productCategoryDtoMapper.toProductCategoryDto(productSubCategory.getProductCategory()));
+        categoryResponse.setProductCategoryDto(productCategoryMapper.toProductCategoryDto(productSubCategory.getProductCategory()));
         return categoryResponse;
     }
 

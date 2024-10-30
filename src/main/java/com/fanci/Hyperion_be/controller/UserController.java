@@ -1,6 +1,7 @@
 package com.fanci.Hyperion_be.controller;
 
 import com.fanci.Hyperion_be.dto.request.CreateNewUserRequest;
+import com.fanci.Hyperion_be.dto.request.UpdateUserRequest;
 import com.fanci.Hyperion_be.dto.response.ApiResponse;
 import com.fanci.Hyperion_be.dto.response.UserResponse;
 import com.fanci.Hyperion_be.service.UserService;
@@ -35,6 +36,20 @@ public class UserController {
     public ApiResponse<UserResponse> addNewUser(@ModelAttribute CreateNewUserRequest request) throws IOException {
         return ApiResponse.<UserResponse>builder()
                 .result(userService.addNewUser(request))
+                .build();
+    }
+
+    @PutMapping("/{id}")
+    public ApiResponse<UserResponse> updateUserById(@ModelAttribute UpdateUserRequest request, @PathVariable Long id) throws IOException {
+        return ApiResponse.<UserResponse>builder()
+                .result(userService.updateUser(request,id))
+                .build();
+    }
+
+    @DeleteMapping("{id}")
+    public ApiResponse<?> deleteUserById(@PathVariable Long id){
+        userService.deleteUser(id);
+        return ApiResponse.<UserResponse>builder()
                 .build();
     }
 

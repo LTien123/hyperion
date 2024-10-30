@@ -4,6 +4,7 @@ import com.fanci.Hyperion_be.dto.ProductColorDto;
 import com.fanci.Hyperion_be.dto.ProductDto;
 import com.fanci.Hyperion_be.dto.ProductHandlebarDto;
 import com.fanci.Hyperion_be.dto.ProductMaterialDto;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 import java.util.List;
@@ -16,6 +17,7 @@ import java.util.List;
 public class ProductDetailResponse {
     private Long id;
     private Integer stock;
+    @JsonProperty(value = "isActive")
     private boolean isActive;
     private ProductDto productDto;
     private ProductColorDto productColorDto;

@@ -1,9 +1,22 @@
 package com.fanci.Hyperion_be.repository;
 
 import com.fanci.Hyperion_be.entity.ProductCategory;
+import org.jetbrains.annotations.NotNull;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 public interface ProductCategoryRepository extends JpaRepository<ProductCategory,Long> {
+@Query("select a from ProductCategory a where a.isActive = true")
+@NotNull
+Page<ProductCategory> findAll(@NotNull Pageable pageable);
+
+    @Query("select a from ProductCategory a where a.isActive = true")
+    @NotNull
+    List<ProductCategory> findAll();
 }

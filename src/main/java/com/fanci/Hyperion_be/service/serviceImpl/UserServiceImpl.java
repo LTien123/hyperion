@@ -1,6 +1,7 @@
 package com.fanci.Hyperion_be.service.serviceImpl;
 
 import com.fanci.Hyperion_be.dto.request.CreateNewUserRequest;
+import com.fanci.Hyperion_be.dto.request.UpdateUserRequest;
 import com.fanci.Hyperion_be.dto.response.UserResponse;
 import com.fanci.Hyperion_be.entity.User;
 import com.fanci.Hyperion_be.exception.AppException;
@@ -67,7 +68,24 @@ public class UserServiceImpl implements UserService {
         user.setRoles(request.getRoleId().stream().map(roleId -> roleRepository.findById(roleId).orElseThrow(() -> new AppException(ErrorCode.ROLE_ID_NOT_FOUND))).collect(Collectors.toSet()));
         return toUserResponse(userRepository.save(user));
     }
+    @Override
+    public UserResponse updateUser(UpdateUserRequest request, Long id) throws IOException {
+        User user = userRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.USER_ID_NOT_FOUND));
+        userMapper.updateUser(request, user);
+        user.setRoles(request.getRoleId().stream().map(roleId -> roleRepository.findById(roleId).orElseThrow(() -> new AppException(ErrorCode.ROLE_ID_NOT_FOUND))).collect(Collectors.toSet()));
 
+        if (request.getImage() != null && !request.getImage().isEmpty()) {
+            uploadService.uploadThumbnail(user, request.getImage());
+
+        }
+        return toUserResponse(userRepository.save(user));
+    }
+    @Override
+    public void deleteUser(Long id) {
+        User user = userRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.USER_ID_NOT_FOUND));
+        user.setIsActive(false);
+        userRepository.save(user);
+    }
 
     private UserResponse toUserResponse(User user) {
         UserResponse userResponse = userMapper.toUserResponse(user);
