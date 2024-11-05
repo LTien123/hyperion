@@ -3,6 +3,7 @@ package com.fanci.Hyperion_be.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -38,5 +39,5 @@ public class ProductSubCategory implements UploadThumbnail {
     private ProductCategory productCategory;
 
     @OneToMany(mappedBy = "productSubCategory")
-    private Set<Product> products;
+    private List<Product> products;
 }

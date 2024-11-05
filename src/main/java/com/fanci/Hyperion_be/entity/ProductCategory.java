@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -26,7 +27,7 @@ public class ProductCategory {
     private Boolean isActive;
 
     @OneToMany(mappedBy = "productCategory")
-    private Set<ProductSubCategory> productSubCategories;
+    private List<ProductSubCategory> productSubCategories;
 
 
 }

@@ -1,6 +1,7 @@
 package com.fanci.Hyperion_be.service.serviceImpl;
 
 import com.fanci.Hyperion_be.dto.request.CreateNewProductDetailRequest;
+import com.fanci.Hyperion_be.dto.request.UpdateProductDetailRequest;
 import com.fanci.Hyperion_be.dto.response.ProductDetailResponse;
 import com.fanci.Hyperion_be.dto.response.ProductImageResponse;
 import com.fanci.Hyperion_be.entity.*;
@@ -9,6 +10,7 @@ import com.fanci.Hyperion_be.exception.ErrorCode;
 import com.fanci.Hyperion_be.mapper.*;
 import com.fanci.Hyperion_be.repository.*;
 import com.fanci.Hyperion_be.service.ProductDetailService;
+import com.fanci.Hyperion_be.service.ProductImageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -24,8 +26,8 @@ public class ProductDetailServiceImpl implements ProductDetailService {
     private final ProductHandlebarRepository productHandlebarRepository;
     private final ProductMaterialRepository productMaterialRepository;
     private final ProductColorRepository productColorRepository;
+    private final ProductImageService productImageService;
 
-    private final UploadService uploadService;
 
     private final ProductDetailMapper productDetailMapper;
     private final ProductMapper productMapper;
@@ -47,20 +49,21 @@ public class ProductDetailServiceImpl implements ProductDetailService {
         //add product
         Product product = productRepository.findProductByProductId(request.getProductId()).orElseThrow(() -> new AppException(ErrorCode.PRODUCT_ID_NOT_FOUND));
         productDetail.setProduct(product);
+
         //add handlebar
-        ProductHandlebar productHandlebar = null;
+
         if (request.getHandlebarId() != null) {
-            productHandlebar = productHandlebarRepository.findByProductHandlebarId(request.getHandlebarId()).orElseThrow(() -> new AppException(ErrorCode.PRODUCT_HANDLEBAR_ID_NOT_FOUND));
+            var productHandlebar = productHandlebarRepository.findByProductHandlebarId(request.getHandlebarId()).orElseThrow(() -> new AppException(ErrorCode.PRODUCT_HANDLEBAR_ID_NOT_FOUND));
+            productDetail.setProductHandlebar(productHandlebar);
         }
-        productDetail.setProductHandlebar(productHandlebar);
+
 
         //add material
 
         if (request.getMaterialId() != null) {
-            ProductMaterial  productMaterial = productMaterialRepository.findByProductMaterialId(request.getMaterialId()).orElseThrow(() -> new AppException(ErrorCode.PRODUCT_MATERIAL_ID_NOT_FOUND));
+            ProductMaterial productMaterial = productMaterialRepository.findByProductMaterialId(request.getMaterialId()).orElseThrow(() -> new AppException(ErrorCode.PRODUCT_MATERIAL_ID_NOT_FOUND));
             productDetail.setProductMaterial(productMaterial);
         }
-
 
         //add color
         ProductColor productColor = productColorRepository.findByProductColorId(request.getColorId()).orElseThrow(() -> new AppException(ErrorCode.PRODUCT_COLOR_ID_NOT_FOUND));
@@ -77,13 +80,53 @@ public class ProductDetailServiceImpl implements ProductDetailService {
         });
 
         //save product detail to database, change to product detail response
-        var newProduct = productDetailRepository.save(productDetail);
-        var productDetailResponse = this.toProductDetailResponse(newProduct);
+        var newProductDetail = productDetailRepository.save(productDetail);
+        var productDetailResponse = this.toProductDetailResponse(newProductDetail);
 
 
         //add product image response to product detail response
-        List<ProductImageResponse> productImageResponseList = uploadService.uploadProductImagesToCloudinary(newProduct, request.getImages());
+        List<ProductImageResponse> productImageResponseList = productImageService.uploadProductImagesToCloudinary(newProductDetail, request.getImages());
         productDetailResponse.setProductImageResponseList(productImageResponseList);
+
+        return productDetailResponse;
+    }
+
+    @Override
+    public ProductDetailResponse updateProductDetailById(Long id, UpdateProductDetailRequest request) throws IOException {
+        var productDetail = productDetailRepository.findProductDetailById(id).orElseThrow(() -> new AppException(ErrorCode.PRODUCT_DETAIL_ID_NOT_FOUND));
+        productDetailMapper.updateProductDetail(request,productDetail);
+
+        //add handlebar
+
+        if (request.getHandlebarId() != null) {
+            var productHandlebar = productHandlebarRepository.findByProductHandlebarId(request.getHandlebarId()).orElseThrow(() -> new AppException(ErrorCode.PRODUCT_HANDLEBAR_ID_NOT_FOUND));
+            productDetail.setProductHandlebar(productHandlebar);
+        }
+
+        //add material
+        if (request.getMaterialId() != null) {
+            ProductMaterial productMaterial = productMaterialRepository.findByProductMaterialId(request.getMaterialId()).orElseThrow(() -> new AppException(ErrorCode.PRODUCT_MATERIAL_ID_NOT_FOUND));
+            productDetail.setProductMaterial(productMaterial);
+        }
+
+        //add color
+        ProductColor productColor = productColorRepository.findByProductColorId(request.getColorId()).orElseThrow(() -> new AppException(ErrorCode.PRODUCT_COLOR_ID_NOT_FOUND));
+        productDetail.setProductColor(productColor);
+
+        // if material, color, handlebar are same, thr error that product already existed
+        productDetailRepository.findProductDetailByProductName(productDetail.getProduct().getName()).forEach((res) -> {
+            if (res != productDetail && res.getProductMaterial() == productDetail.getProductMaterial() && res.getProductColor() == productDetail.getProductColor() && res.getProductHandlebar() == productDetail.getProductHandlebar()) {
+                throw new AppException(ErrorCode.PRODUCT_DETAIL_DUPLICATED);
+            }
+        });
+        //save product detail to db
+
+        var productDetailResponse = toProductDetailResponse( productDetailRepository.save(productDetail));
+        //add product image response to product detail response
+        if(request.getImages() != null){
+            List<ProductImageResponse> productImageResponseList = productImageService.uploadProductImagesToCloudinary(productDetail, request.getImages());
+           productImageResponseList.forEach(productImageResponse -> productDetailResponse.getProductImageResponseList().add(productImageResponse));
+        }
 
         return productDetailResponse;
     }
@@ -94,6 +137,13 @@ public class ProductDetailServiceImpl implements ProductDetailService {
         return toProductDetailResponse(productDetail);
     }
 
+    @Override
+    public void deleteProductDetailById(Long id) {
+        var productDetail = productDetailRepository.findProductDetailById(id).orElseThrow(() -> new AppException(ErrorCode.PRODUCT_DETAIL_ID_NOT_FOUND));
+        productDetail.setActive(false);
+        productDetailRepository.save(productDetail);
+    }
+
     public ProductDetailResponse toProductDetailResponse(ProductDetail productDetail) {
         var productDetailResponse = productDetailMapper.toProductDetailResponse(productDetail);
         productDetailResponse.setProductDto(productMapper.toProductDto(productDetail.getProduct()));
@@ -101,7 +151,7 @@ public class ProductDetailServiceImpl implements ProductDetailService {
         productDetailResponse.setProductHandlebarDto(productHandlebarMapper.toProductHandlebarDto(productDetail.getProductHandlebar()));
         productDetailResponse.setProductMaterialDto(productMaterialMapper.toProductMaterialDto(productDetail.getProductMaterial()));
         productDetailResponse.setProductImageResponseList(productImageMapper.toProductImageResponseList(productDetail.getProductImages()));
-        if( productDetailResponse.getProductImageResponseList() != null){
+        if (productDetailResponse.getProductImageResponseList() != null) {
             productDetailResponse.getProductImageResponseList().forEach(productImageResponse -> productImageResponse.setProductDetailId(productDetailResponse.getId()));
         }
         return productDetailResponse;

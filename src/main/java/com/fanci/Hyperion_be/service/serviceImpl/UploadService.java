@@ -28,15 +28,6 @@ import java.util.Map;
 public class UploadService {
     private final Cloudinary cloudinary;
 
-    private final ProductImageRepository productImageRepository;
-    private final ProductHandlebarRepository productHandlebarRepository;
-    private final ProductColorRepository productColorRepository;
-
-    private final ProductImageMapper productImageMapper;
-    private final ProductMapper productMapper;
-    private final ProductColorMapper productColorMapper;
-    private final ProductHandlebarMapper productHandlebarMapper;
-
     public void uploadThumbnail(UploadThumbnail uploadThumbnail, MultipartFile file) throws IOException {
         if (file == null) {
             throw new AppException(ErrorCode.IMAGE_UPLOAD_FAILED);
@@ -48,32 +39,12 @@ public class UploadService {
         uploadThumbnail.setThumbnailPublicId(publicId);
     }
 
-    public List<ProductImageResponse> uploadProductImagesToCloudinary(ProductDetail productDetail, List<MultipartFile> images) throws IOException {
-        if(images == null || images.isEmpty()){
-            return null;
-        }
-
-        List<ProductImage> productImages = new ArrayList<>();
-        for (MultipartFile image : images) {
-            Map<String, Object> uploadResult = cloudinary.uploader().upload(image.getBytes(), ObjectUtils.emptyMap());
-            String url = uploadResult.get("url").toString();
-            String publicId = uploadResult.get("public_id").toString();
-            ProductImage productImage = ProductImage.builder()
-                    .url(url)
-                    .publicId(publicId)
-                    .productDetail(productDetail)
-                    .build();
-            productImages.add(productImageRepository.save(productImage));
-
-        }
-
-
-        return productImages.stream().map(this::toProductImageResponse).toList();
+    public String deleteThumbnail(UploadThumbnail uploadThumbnail) throws IOException {
+        Map<String, Object> destroyResult = cloudinary.uploader().destroy(uploadThumbnail.getThumbnailPublicId(), ObjectUtils.emptyMap());
+        uploadThumbnail.setThumbnailUrl(null);
+        uploadThumbnail.setThumbnailPublicId(null);
+        return destroyResult.get("result").toString();
     }
 
-    private ProductImageResponse toProductImageResponse(ProductImage productImage) {
-        ProductImageResponse productImageResponse = productImageMapper.toProductImageResponse(productImage);
-       productImageResponse.setProductDetailId(productImage.getProductDetail().getId());
-        return productImageResponse;
-    }
+
 }

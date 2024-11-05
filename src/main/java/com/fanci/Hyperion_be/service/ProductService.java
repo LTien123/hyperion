@@ -16,6 +16,8 @@ public interface ProductService {
 
     ProductResponse findProductByProductName(String productName);
 
+    ProductResponse findProductById(Long id);
+
     ProductResponse createNewProduct(CreateNewProductRequest request) throws IOException;
 
     ProductResponse updateProductById(UpdateProductRequest request, Long id) throws IOException;

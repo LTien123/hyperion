@@ -60,6 +60,11 @@ public class ProductServiceImpl implements ProductService {
         Product product = productRepository.findProductByProductName(productName).orElseThrow(() -> new AppException(ErrorCode.PRODUCT_NAME_NOT_FOUND));
         return toProductResponse(product);
     }
+    @Override
+    public ProductResponse findProductById(Long id){
+        Product product = productRepository.findProductByProductId(id).orElseThrow(() -> new AppException(ErrorCode.PRODUCT_ID_NOT_FOUND));
+        return toProductResponse(product);
+    }
 
     @Override
     @Transactional
@@ -80,8 +85,11 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ProductResponse updateProductById(UpdateProductRequest request, Long id) throws IOException {
         Product product = productRepository.findProductByProductId(id).orElseThrow(() -> new AppException(ErrorCode.PRODUCT_ID_NOT_FOUND));
+        product.setUpdatedAt(LocalDateTime.now());
         productMapper.updateProduct(request, product);
-        uploadService.uploadThumbnail(product, request.getThumbnail());
+        if (request.getThumbnail() != null) {
+            uploadService.uploadThumbnail(product, request.getThumbnail());
+        }
         return toProductResponse(productRepository.save(product));
 
     }
@@ -104,11 +112,11 @@ public class ProductServiceImpl implements ProductService {
         if (product.getProductDetails() != null) {
             List<ProductDetailDto> productDetailDtoList = new ArrayList<>();
             for (ProductDetail p : product.getProductDetails()) {
-                if (p.isActive()){
-                ProductColorDto productColorDto = productColorMapper.toProductColorDto(p.getProductColor());
-                ProductHandlebarDto productHandlebarDto = productHandlebarMapper.toProductHandlebarDto(p.getProductHandlebar());
-                ProductMaterialDto productMaterialDto = productMaterialMapper.toProductMaterialDto(p.getProductMaterial());
-                List<ProductImageDto> productImageDtoList = productImageMapper.toProductImageDtoList(p.getProductImages());
+                if (p.isActive()) {
+                    ProductColorDto productColorDto = productColorMapper.toProductColorDto(p.getProductColor());
+                    ProductHandlebarDto productHandlebarDto = productHandlebarMapper.toProductHandlebarDto(p.getProductHandlebar());
+                    ProductMaterialDto productMaterialDto = productMaterialMapper.toProductMaterialDto(p.getProductMaterial());
+                    List<ProductImageDto> productImageDtoList = productImageMapper.toProductImageDtoList(p.getProductImages());
                     ProductDetailDto productDetailDto = productDetailMapper.toProductDetailDto(p);
                     productDetailDto.setActive(p.isActive());
                     productDetailDto.setProductColorDto(productColorDto);
