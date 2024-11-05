@@ -1,0 +1,103 @@
+import { Component } from '@angular/core';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ProductCategories } from '../../../../dto/ProductCategories';
+import { ProductSubCategories } from '../../../../dto/ProductSubCategories';
+import { ProductService } from '../../../service/product.service';
+import { Product } from '../../../../dto/Product';
+
+@Component({
+  selector: 'app-update-product',
+  templateUrl: './update-product.component.html',
+  styleUrl: './update-product.component.scss'
+})
+export class UpdateProductComponent {
+  isSubmitting: boolean = false;
+  productForm!: FormGroup;
+  selectedThumbnail: File | null = null;
+  thumbnailError: string | null = null;
+  product!: Product;
+  productId!: number;
+  constructor(private fb: FormBuilder, private productService: ProductService, private router: Router, private route: ActivatedRoute) {
+    this.productForm = this.fb.group({
+      name: ['', [Validators.required]],
+      price: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
+      weight: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
+      thumbnail: [null],
+      description: ['', Validators.required]
+    });
+  }
+
+  ngOnInit(): void {
+    this.getProduct()
+
+  }
+
+  getProduct() {
+    this.route.params.subscribe((param) => {
+      this.productId = param['id'];
+      this.productService.getProductById(this.productId).subscribe({
+        next: (res) => {
+          this.product = res.result;
+          this.initForm();
+        },
+        error: () => {
+
+        }
+      })
+    })
+  }
+
+  initForm() {
+    this.productForm.patchValue({
+      name: this.product.name,
+      price: this.product.price,
+      weight: this.product.weight,
+      description: this.product.description
+    })
+  }
+
+
+  onFileChange(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      const file = input.files[0];
+      this.productForm.get('thumbnail')?.setValue(file);
+    }
+  }
+
+  onSubmit() {
+    if (this.productForm.valid) {
+      this.isSubmitting = true;
+      const formData = new FormData();
+      formData.append('name', this.productForm.get('name')?.value);
+      formData.append('price', this.productForm.get('price')?.value);
+      formData.append('weight', this.productForm.get('weight')?.value);
+      formData.append('description', this.productForm.get('description')?.value);
+
+      const thumbnail = this.productForm.get('thumbnail')?.value;
+      if (thumbnail) {
+        formData.append('thumbnail', thumbnail);
+      }
+
+
+
+      for (const [key, value] of (formData as any).entries()) {
+        console.log(`${key}:`, value);
+      }
+      this.productService.updateProductById(this.productId, formData).subscribe({
+        next: (res) => {
+          this.isSubmitting = false;
+          this.router.navigate(['/admin/product']);
+          alert("updated successfully");
+        }, error: () => {
+          this.isSubmitting = false;
+          alert("error");
+        }
+      })
+
+
+
+    }
+  }
+}

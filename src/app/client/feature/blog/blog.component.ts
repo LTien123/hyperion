@@ -38,10 +38,10 @@ export class BlogComponent implements OnInit {
     this.blogService.getBlogById(id).subscribe({
       next: (res)=>{
         this.blogDetail = res.result;
+        const rawDescription = this.blogDetail.description;
+        this.description = this.sanitizer.bypassSecurityTrustHtml(rawDescription);
         if (this.blogDetail.blogCategoryDto.name != this.blogCategoryName) {
           this.router.navigate(['not-found'], { replaceUrl: true });
-          const rawDescription = this.blogDetail.description;
-          this.description = this.sanitizer.bypassSecurityTrustHtml(rawDescription);
       }},
       error: ()=>{
         this.router.navigate(['not-found'], { replaceUrl: true });

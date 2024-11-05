@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ProductService } from '../../service/product.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Product } from '../../../dto/Product';
+import { Product, ProductDetailDto } from '../../../dto/Product';
+import { ProductDetail } from '../../../dto/ProductDetail';
 
 @Component({
   selector: 'app-product',
@@ -11,7 +12,7 @@ import { Product } from '../../../dto/Product';
 export class ProductComponent implements OnInit {
   productSubCategoryName!: string;
   productCategoryName!: string;
-  products:Product[] = [];
+  products: Product[] = [];
   productPage: number = 0;
   productSize: number = 10;
 
@@ -26,11 +27,39 @@ export class ProductComponent implements OnInit {
     })
   }
 
+  uniqueMaterials(details: ProductDetailDto[]): ProductDetailDto[] {
+    const uniqueDetailSet = new Set<string>();
+    return details.filter(detail => {
+      const material = detail.productMaterialDto?.material;
+      if (material && !uniqueDetailSet.has(material)) {
+        uniqueDetailSet.add(material);
+        return true;
+      }
+      return false;
+    })
+  }
+
+  uniqueColor(details: ProductDetailDto[]): ProductDetailDto[] {
+    const uniqueDetailSet = new Set<string>();
+    return details.filter(detail => {
+      const color = detail.productColorDto.color;
+      if (color && !uniqueDetailSet.has(color)) {
+        uniqueDetailSet.add(color)
+        return true;
+      }
+      return false;
+    })
+  }
+
+
+
+
+
   getData() {
     this.productService.findAllProductBySubCategoryName(this.productSubCategoryName, this.productPage, this.productSize).subscribe({
       next: (res) => {
         this.products = res.result.content;
-        console.log (this.products)
+
       }
     })
   }

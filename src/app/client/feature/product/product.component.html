@@ -26,7 +26,7 @@
                             <div class="col-6 d-flex flex-column justify-content-center align-items-center">
                                 <!-- Hiển thị Material -->
                                 Material:
-                                <div *ngFor="let productDetail of item.productDetailDtoList">
+                                <div *ngFor="let productDetail of uniqueMaterials(item.productDetailDtoList) ">
                                     <div *ngIf="productDetail.productMaterialDto">
 
                                         <h6>{{ productDetail.productMaterialDto.material }}</h6>
@@ -38,7 +38,7 @@
 
                     <!-- Màu sắc sản phẩm -->
                     <div class="product-colors d-flex justify-content-center align-items-center custom-border-bottom">
-                        <div *ngFor="let productDetail of item.productDetailDtoList">
+                        <div *ngFor="let productDetail of uniqueColor(item.productDetailDtoList)">
                             <div class="col-2 product-color ms-2 me-2"
                                 [ngStyle]="{'background-color': productDetail.productColorDto.color}">
                             </div>

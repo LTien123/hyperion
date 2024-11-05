@@ -16,6 +16,16 @@ import { UpdateBlogComponent } from './feature/blog/update-blog/update-blog.comp
 import { SignUpComponent } from './feature/sign-up/sign-up.component';
 import { UsersComponent } from './feature/users/users.component';
 import { UpdateUserComponent } from './feature/users/update-user/update-user.component';
+import { CreateProductComponent } from './feature/product/create-product/create-product.component';
+import { CreateProductDetailComponent } from './feature/product-detail/create-product-detail/create-product-detail.component';
+import { UpdateProductComponent } from './feature/product/update-product/update-product.component';
+import { DivDraggerDirective } from './directive/div-dragger.directive';
+import { UpdateProductDetailComponent } from './feature/product-detail/update-product-detail/update-product-detail.component';
+import { CreateCategoryComponent } from './feature/product/create-category/create-category.component';
+import { UpdateCategoryComponent } from './feature/product/update-category/update-category.component';
+import { CreateSubCategoryComponent } from './feature/product/create-sub-category/create-sub-category.component';
+import { UpdateSubCategoryComponent } from './feature/product/update-sub-category/update-sub-category.component';
+
 
 
 
@@ -32,7 +42,16 @@ import { UpdateUserComponent } from './feature/users/update-user/update-user.com
     UpdateBlogComponent,
     SignUpComponent,
     UsersComponent,
-    UpdateUserComponent
+    UpdateUserComponent,
+    CreateProductComponent,
+    CreateProductDetailComponent,
+    UpdateProductComponent,
+    UpdateProductDetailComponent,
+    DivDraggerDirective,
+    CreateCategoryComponent,
+    UpdateCategoryComponent,
+    CreateSubCategoryComponent,
+    UpdateSubCategoryComponent
   ],
   imports: [
     CommonModule,

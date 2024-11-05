@@ -24,22 +24,21 @@
                 <h4>{{product?.name}}</h4>
             </div>
             <div class="colors d-flex justify-content-center align-items-center border-bottom" style="height: 10vh;">
-                <div class="btn-group" *ngFor="let detail of productDetail">
-                    <button class="btn" (click)="selectColor(detail.productColorDto.color)"
-                        [ngStyle]="{'background-color': detail.productColorDto.color}"
+                <div class="btn-group" *ngFor="let color of productColors">
+                    <button class="btn" (click)="selectColor(color.color)" [ngStyle]="{'background-color': color.color}"
                         style="font-weight: 20px; width: 5vh; height: 5vh; border: 3px solid rgb(60, 60, 60) ;"
-                        [class.inactive]="selectedColor != detail.productColorDto.color">
+                        [class.inactive]="selectedColor != color.color">
                     </button>
                 </div>
             </div>
             <div>
                 <div class="handlebar d-flex justify-content-center align-items-center border-bottom"
                     style="height: 7vh;" *ngIf="selectedHandlebar">
-                    <div class="btn-group" *ngFor="let detail of productDetail">
-                        <button class="btn" (click)="selectHandlebar(detail.productHandlebarDto.style)"
-                            [class.inactive]="selectedHandlebar != detail.productHandlebarDto.style"
+                    <div class="btn-group" *ngFor="let handlebar of productHandlebars">
+                        <button class="btn" (click)="selectHandlebar(handlebar.style)"
+                            [class.inactive]="selectedHandlebar != handlebar.style"
                             style="background-color: rgb(214, 214, 214); border:1px solid rgb(60, 60, 60)">
-                            {{detail.productHandlebarDto.style}}
+                            {{handlebar.style}}
                         </button>
 
                     </div>
@@ -47,12 +46,12 @@
             </div>
             <div>
                 <div class="material d-flex justify-content-center align-items-center border-bottom"
-                    style="height: 7vh;" *ngIf="selectedMaterial" >
-                    <div class="btn-group" *ngFor="let detail of productDetail">
-                        <button class="btn" [class.inactive]="selectedMaterial != detail.productMaterialDto.material"
-                            (click)="selectMaterial(detail.productMaterialDto.material)"
+                    style="height: 7vh;" *ngIf="selectedMaterial">
+                    <div class="btn-group" *ngFor="let material of productMaterials">
+                        <button class="btn" [class.inactive]="selectedMaterial != material.material"
+                            (click)="selectMaterial(material.material)"
                             style="background-color: rgb(214, 214, 214); border:1px solid rgb(60, 60, 60)">
-                            {{detail.productMaterialDto.material}}
+                            {{material.material}}
                         </button>
                     </div>
                 </div>

@@ -4,6 +4,7 @@ import { BlogService } from '../../../service/blog.service';
 import { BlogCategories } from '../../../../dto/BlogCategories';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AuthService } from '../../../../auth/service/auth.service';
 
 @Component({
   selector: 'app-create-blog',
@@ -17,7 +18,7 @@ export class CreateBlogComponent implements OnInit {
   thumbnailError: string | null = null;
   isSubmitting = false;
 
-  constructor(private blogService: BlogService,  private fb: FormBuilder, private router:Router) {
+  constructor(private blogService: BlogService, private fb: FormBuilder, private router: Router, private authService: AuthService) {
   }
   ngOnInit(): void {
     this.getAllBlogCategories()
@@ -53,23 +54,25 @@ export class CreateBlogComponent implements OnInit {
     }
   }
 
-  onSubmit(){
-    if(this.blogForm?.valid && this.selectedThumbnail){
-      this.isSubmitting = true; 
+  onSubmit() {
+    if (this.blogForm?.valid && this.selectedThumbnail) {
+      this.isSubmitting = true;
       const formData = new FormData();
       formData.append('title', this.blogForm.get('title')?.value);
       formData.append('subTitle', this.blogForm.get('subTitle')?.value);
       formData.append('blogCategoryId', this.blogForm.get('category')?.value);
       formData.append('description', this.blogForm.get('description')?.value);
       formData.append('thumbnail', this.selectedThumbnail);
-      formData.append('userId',"1");//test với user id = 1,cần sửa lại
-      alert("your blog has been sent, wait for response");
+      const userId = this.authService.getUserInfo()?.sub.toString();
+      if (userId) {
+        formData.append('userId', userId);
+      }
       this.blogService.addNewBlog(formData).subscribe({
-       
-        next:(res)=>{
+
+        next: (res) => {
           alert("your blog was sent successfully")
-          console.log('Blog created successfully', res);
           this.router.navigate(['/admin/blog']);
+          this.isSubmitting = false;
 
         },
         error: (err) => {

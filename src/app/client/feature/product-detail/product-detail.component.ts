@@ -24,9 +24,9 @@ export class ProductDetailComponent {
   product: Product | undefined
   productDetail: ProductDetail[] = [];
   productColors: ProductColorDto[] = [];
-  productHandlebars: ProductHandlebarDto[] | undefined;
-  productMaterials: ProductMaterialDto[] | undefined;
-  filteredImages: ProductImageResponse[] | undefined;
+  productHandlebars: ProductHandlebarDto[] = [];
+  productMaterials: ProductMaterialDto[] = [];
+  filteredImages: ProductImageResponse[] = [];
 
   constructor(private productDetailService: ProductDetailService, private cartService: CartService, private route: ActivatedRoute, private router: Router) { }
 
@@ -44,18 +44,51 @@ export class ProductDetailComponent {
   getData() {
     if (this.productName)
       this.productDetailService.getProductDetailByProductName(this.productName).subscribe({
-        next: (res: { result: ProductDetail[]; }) => {
+        next: (res) => {
           this.productDetail = res.result;
+
+          this.productDetail.forEach(detail => {
+            if (this.productColors.every(color => color.id != detail.productColorDto.id)) {
+              this.productColors.push(detail.productColorDto);
+            }
+
+          })
+
+          this.productDetail.forEach(detail => {
+            if (detail.productHandlebarDto)
+              if (this.productHandlebars?.every(handlebar => handlebar.id != detail.productHandlebarDto?.id)) {
+                this.productHandlebars.push(detail.productHandlebarDto);
+              }
+          })
+          console.log(this.productHandlebars);
+
+          this.productDetail.forEach(detail => {
+            if (detail.productMaterialDto)
+              if (this.productMaterials?.every(material => material.id != detail.productMaterialDto?.id)) {
+                this.productMaterials?.push(detail.productMaterialDto);
+              }
+
+
+
+          })
+
+
           if (this.productDetail[0]?.productHandlebarDto)
             this.selectedHandlebar = this.productDetail[0]?.productHandlebarDto?.style;
+
           if (this.productDetail[0]?.productMaterialDto)
             this.selectedMaterial = this.productDetail[0]?.productMaterialDto?.material;
+
           this.selectedColor = this.productDetail[0]?.productColorDto.color;
+
           this.selectedImg = this.productDetail.filter(product =>
             product.productHandlebarDto?.style === this.selectedHandlebar &&
             product.productColorDto?.color === this.selectedColor
           )[0]?.productImageResponseList[0]?.url || "";
+
           this.getFilteredImages();
+
+
         }
       })
 
@@ -74,15 +107,14 @@ export class ProductDetailComponent {
       productDetail.productColorDto.color === this.selectedColor &&
       productDetail.productMaterialDto?.material === this.selectedMaterial
     );
-
-
     if (matchingProduct) {
       const cartItem: CartItem = {
         productDetail: matchingProduct,
         amount: this.counter
       };
-
       this.cartService.addToCart(cartItem)
+    } else {
+      alert("error! product is not existed please select again")
     }
   }
 
@@ -121,7 +153,6 @@ export class ProductDetailComponent {
       productDetail.productHandlebarDto?.style == this.selectedHandlebar &&
       productDetail.productColorDto?.color == this.selectedColor
     ).flatMap(product => product.productImageResponseList || []);
-
   }
 
   increase() {

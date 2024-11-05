@@ -11,10 +11,10 @@ export interface FullProduct{
 export interface ProductSubCategory {
     id: number;
     name: string;
-    productResponseList: Product[];
+    productResponseList: ProductDto[];
   }
 
-  export interface Product {
+  export interface ProductDto {
     id: number;
     name: string;
     price: number;

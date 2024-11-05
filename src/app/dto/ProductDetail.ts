@@ -5,14 +5,14 @@ export interface ProductDetail {
     stock: number;
     productDto: ProductDto;
     productColorDto: ProductColorDto;
-    productHandlebarDto: ProductHandlebarDto;
-    productMaterialDto: ProductMaterialDto;
+    productHandlebarDto: ProductHandlebarDto | null;
+    productMaterialDto: ProductMaterialDto | null;
     productImageResponseList: ProductImageResponse[];
     active: boolean;
 }
 
 export interface ProductImageResponse {
-    id: string;
+    id: number;
     url: string;
     publicId: string;
     productDetailId: number;

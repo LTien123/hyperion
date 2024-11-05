@@ -12,26 +12,33 @@
     </div>
 
     <div class="body mt-3">
-        <table class="blogs">
-            <tr>
-                <th>ID</th>
-                <th>Title</th>
-                <th>Category</th>
-                <th>Created at</th>
-                <th>Updated at</th>
-                <th>Created by</th>
-                <th>Action</th>
-            </tr>
-            <tr *ngFor="let blog of allBlogs">
-                <td>{{blog.id}}</td>
-                <td>{{blog.title}}</td>
-                <td>{{blog.blogCategoryDto.name}}</td>
-                <td>{{blog.createdAt}}</td>
-                <td>{{blog.updatedAt}}</td>
-                <td>{{blog.userDto.username}}</td>
-                <td><button [routerLink]="['update',blog.id]">update</button> <button (click)="deleteBlogById(blog.id)" >delete</button></td>
-            </tr>
-        </table>
+        <table class="table table-hover table-bordered table-striped text-center align-middle">
+            <thead class="table-primary">
+              <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Title</th>
+                <th scope="col">Category</th>
+                <th scope="col">Created at</th>
+                <th scope="col">Updated at</th>
+                <th scope="col">Created by</th>
+                <th scope="col">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let blog of allBlogs">
+                <td>{{ blog.id }}</td>
+                <td>{{ blog.title }}</td>
+                <td>{{ blog.blogCategoryDto.name }}</td>
+                <td>{{ blog.createdAt }}</td>
+                <td>{{ blog.updatedAt }}</td>
+                <td>{{ blog.userDto.username }}</td>
+                <td>
+                  <button class="btn btn-primary btn-sm" [routerLink]="['update', blog.id]">Update</button>
+                  <button class="btn btn-danger btn-sm" (click)="deleteBlogById(blog.id)">Delete</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
 
         <nav class="d-flex justify-content-center mt-5">
             <ul class="pagination">

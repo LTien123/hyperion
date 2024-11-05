@@ -4,7 +4,8 @@ import { ProductSubCategories } from '../../../dto/ProductSubCategories';
 import { Product } from '../../../dto/Product';
 import { ProductDetail } from '../../../dto/ProductDetail';
 import { ProductService } from '../../service/product.service';
-import { FullProduct } from '../../../dto/FullProduct';
+import { FullProduct, ProductDto } from '../../../dto/FullProduct';
+import { ProductDetailService } from '../../service/product-detail.service';
 
 @Component({
   selector: 'app-product',
@@ -12,26 +13,88 @@ import { FullProduct } from '../../../dto/FullProduct';
   styleUrl: './product.component.scss'
 })
 export class ProductComponent implements OnInit {
-  productCategories:ProductCategories[] = [];
-  productSubCategories:ProductSubCategories[] = [];
-  product:FullProduct[] =[];
-  productDetail:ProductDetail | undefined
-  constructor(private productService:ProductService) { }
+
+  selectedCategoryId: number | null = null;
+  selectedSubCategoryId: number | null = null;
+  selectedProductId: number | null = null;
+  data: FullProduct[] = [];
+  isSubmitting = false;
+  constructor(private productService: ProductService, private productDetailService: ProductDetailService) { }
 
   ngOnInit(): void {
-   this.getAllProduct();
+    this.getAllProduct();
   }
 
-  getAllProduct(){
+  getAllProduct() {
     this.productService.getAllProduct().subscribe({
-     next:(res)=>{
-      this.product = res.result;
-      console.log(this.product);
-     } 
+      next: (res) => {
+        this.data = res.result;
+        console.log(this.data);
+      }
     })
   }
 
- 
+  hasHandlebarStyle(product: ProductDto): boolean {
+    return product.productDetailDtoList.some(detail => detail.productHandlebarDto?.style);
+  }
+
+  hasMaterial(product: ProductDto): boolean {
+    return product.productDetailDtoList.some(detail => detail.productMaterialDto?.material);
+  }
+
+
+  toggleCategory(categoryId: number) {
+    this.selectedCategoryId = this.selectedCategoryId === categoryId ? null : categoryId;
+    this.selectedSubCategoryId = null;  // Reset subcategory khi chuyển category
+    this.selectedProductId = null;  // Reset product khi chuyển category
+  }
+
+  toggleSubCategory(subCategoryId: number) {
+    this.selectedSubCategoryId = this.selectedSubCategoryId === subCategoryId ? null : subCategoryId;
+    this.selectedProductId = null;  // Reset product khi chuyển subcategory
+  }
+
+  toggleProduct(productId: number) {
+    this.selectedProductId = this.selectedProductId === productId ? null : productId;
+  }
+
+  editProduct(id: number) {
+  }
+
+  deleteProduct(id: number) {
+    this.isSubmitting = true;
+    this.productService.deleteProductById(id).subscribe({
+      next: () => {
+        this.isSubmitting = false;
+        alert("deleted successfully");
+        this.getAllProduct();
+      },
+      error: (err) => {
+        this.isSubmitting = false;
+        console.log(err);
+        alert("can't delete, check again");
+      }
+    })
+  }
+
+  editProductDetail(arg0: number) {
+    throw new Error('Method not implemented.');
+  }
+  deleteProductDetail(id: number) {
+    this.isSubmitting = true;
+    this.productDetailService.deleteProductDetailById(id).subscribe({
+      next: () => {
+        this.isSubmitting = false;
+        alert("deleted successfully");
+        this.getAllProduct();
+      },
+      error: (err) => {
+        this.isSubmitting = false;
+        console.log(err);
+        alert("can't delete, check again");
+      }
+    })
+  }
 
 
 
