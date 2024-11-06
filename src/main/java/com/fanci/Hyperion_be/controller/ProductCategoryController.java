@@ -18,26 +18,31 @@ public class ProductCategoryController {
     private final ProductCategoryService productCategoryService;
 
     @GetMapping
-    public ApiResponse<Page<ProductCategoryResponseSimple>> findAllProductCategoriesWithPagination(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "1000") int size){
+    public ApiResponse<Page<ProductCategoryResponseSimple>> findAllProductCategoriesWithPagination(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "1000") int size) {
         return ApiResponse.<Page<ProductCategoryResponseSimple>>builder()
-                .result(productCategoryService.findAllProductCategoriesWithPagination(page,size))
+                .result(productCategoryService.findAllProductCategoriesWithPagination(page, size))
                 .build();
     }
 
     @PostMapping
-    public ApiResponse<ProductCategoryResponseSimple> addNewProductCategory(@RequestBody CreateNewProductCategoryRequest request){
+    public ApiResponse<ProductCategoryResponseSimple> addNewProductCategory(@RequestBody CreateNewProductCategoryRequest request) {
         return ApiResponse.<ProductCategoryResponseSimple>builder()
                 .result(productCategoryService.addNewProductCategory(request))
                 .build();
     }
 
     @GetMapping("all")
-    public ApiResponse<List<ProductCategoryResponse>> findAllProductCategories(){
+    public ApiResponse<List<ProductCategoryResponse>> findAllProductCategories() {
         return ApiResponse.<List<ProductCategoryResponse>>builder()
                 .result(productCategoryService.findAllProductCategories())
                 .build();
     }
 
+    @DeleteMapping("/{id}")
+    public ApiResponse<?> deleteProductCategory(@PathVariable Long id) {
+        productCategoryService.deleteProductCategory(id);
+        return ApiResponse.builder().build();
+    }
 
 
 }

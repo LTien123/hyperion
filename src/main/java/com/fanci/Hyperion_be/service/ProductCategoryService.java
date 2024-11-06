@@ -14,4 +14,5 @@ public interface ProductCategoryService {
 
     ProductCategoryResponseSimple addNewProductCategory(CreateNewProductCategoryRequest request);
 
+    void deleteProductCategory(Long id);
 }

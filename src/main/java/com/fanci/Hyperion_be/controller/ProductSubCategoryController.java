@@ -1,6 +1,7 @@
 package com.fanci.Hyperion_be.controller;
 
 import com.fanci.Hyperion_be.dto.request.CreateNewProductSubCategoryRequest;
+import com.fanci.Hyperion_be.dto.request.UpdateSubCategoryRequest;
 import com.fanci.Hyperion_be.dto.response.ApiResponse;
 import com.fanci.Hyperion_be.dto.response.ProductSubCategoryResponse;
 import com.fanci.Hyperion_be.service.ProductSubCategoryService;
@@ -25,6 +26,12 @@ public class ProductSubCategoryController {
                 .build();
     }
 
+    @GetMapping("/{id}")
+    public ApiResponse<ProductSubCategoryResponse> findProductSubCategoryById(@PathVariable Long id){
+        return ApiResponse.<ProductSubCategoryResponse>builder()
+                .result(productSubCategoryService.findProductSubCategoryById(id))
+                .build();
+    }
 
     @GetMapping("name")
     public ApiResponse<List<ProductSubCategoryResponse>> findProductSubCategoryByName(@RequestParam String categoryName){
@@ -42,5 +49,16 @@ public class ProductSubCategoryController {
                 .build();
     }
 
+    @PutMapping ("/{id}")
+    ApiResponse<ProductSubCategoryResponse> updateProductSubCategoryById(@ModelAttribute UpdateSubCategoryRequest request,@PathVariable Long id) throws IOException {
+        return ApiResponse.<ProductSubCategoryResponse>builder()
+                .result(productSubCategoryService.updateProductSubCategoryById(request,id))
+                .build();
+    }
 
+    @DeleteMapping("/{id}")
+    ApiResponse<?> deleteProductById(@PathVariable Long id){
+        productSubCategoryService.deleteProductSubCategoryById(id);
+        return ApiResponse.builder().build();
+    }
 }

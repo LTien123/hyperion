@@ -47,7 +47,8 @@ public enum ErrorCode {
     PERMISSION_NAME_DUPLICATED(1039, "permission name is duplicared", HttpStatus.BAD_REQUEST),
     PERMISSION_ID_NOT_FOUND(1040, "permission id not found", HttpStatus.BAD_REQUEST),
     USERNAME_DUPLICATED(1041, "username is duplicated", HttpStatus.BAD_REQUEST),
-    USERNAME_NOT_FOUND(1042, "username is not found", HttpStatus.BAD_REQUEST);
+    USERNAME_NOT_FOUND(1042, "username is not found", HttpStatus.BAD_REQUEST),
+    PRODUCT_CATEGORY_ID_NOT_FOUND(1043, "product category id not found", HttpStatus.BAD_REQUEST);
     private final int code;
     private final String message;
     private final HttpStatusCode httpStatusCode;

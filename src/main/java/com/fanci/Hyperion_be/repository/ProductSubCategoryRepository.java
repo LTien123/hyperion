@@ -1,6 +1,7 @@
 package com.fanci.Hyperion_be.repository;
 
 import com.fanci.Hyperion_be.entity.ProductSubCategory;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -21,4 +22,8 @@ public interface ProductSubCategoryRepository extends JpaRepository<ProductSubCa
 
     @Query("select a from ProductSubCategory a where a.productCategory.name =?1 and a.isActive = true")
     List<ProductSubCategory> findAllProductSubCategoryByProductCategoryName(String productCategoryName);
+
+    @Query("select a from ProductSubCategory a where a.id = ?1 and a.isActive = true")
+    @NotNull
+    Optional<ProductSubCategory> findById(@NotNull Long id);
 }

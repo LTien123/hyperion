@@ -1,6 +1,7 @@
 package com.fanci.Hyperion_be.service.serviceImpl;
 
 import com.fanci.Hyperion_be.dto.request.CreateNewProductSubCategoryRequest;
+import com.fanci.Hyperion_be.dto.request.UpdateSubCategoryRequest;
 import com.fanci.Hyperion_be.dto.response.ProductSubCategoryResponse;
 import com.fanci.Hyperion_be.entity.ProductSubCategory;
 import com.fanci.Hyperion_be.exception.AppException;
@@ -33,6 +34,11 @@ public class ProductSubCategoryServiceImpl implements ProductSubCategoryService 
         Pageable pageable = PageRequest.of(page, size);
         return productSubCategoryRepository.findAllProductSubCategoryByProductCategoryId(productCategoryId, pageable).map(this::toProductSubCategoryResponse);
     }
+    @Override
+    public ProductSubCategoryResponse findProductSubCategoryById(Long id){
+        var productSubCategory = productSubCategoryRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.PRODUCT_SUB_CATEGORY_ID_NOT_FOUND));
+        return toProductSubCategoryResponse(productSubCategory);
+    }
 
     @Override
     public List<ProductSubCategoryResponse> findProductSubCategoryByProductCategoryName(String categoryName) {
@@ -55,4 +61,26 @@ public class ProductSubCategoryServiceImpl implements ProductSubCategoryService 
         uploadService.uploadThumbnail(productSubCategory, request.getThumbnail());
         return this.toProductSubCategoryResponse(productSubCategoryRepository.save(productSubCategory));
     }
+
+    @Override
+    public ProductSubCategoryResponse updateProductSubCategoryById(UpdateSubCategoryRequest request, Long id) throws IOException {
+        ProductSubCategory productSubCategory = productSubCategoryRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.PRODUCT_SUB_CATEGORY_ID_NOT_FOUND));
+        productSubCategoryMapper.updateProductSubCategoryByRequest(request, productSubCategory);
+
+        if (request.getThumbnail() != null) {
+            uploadService.deleteThumbnail(productSubCategory);
+            uploadService.uploadThumbnail(productSubCategory, request.getThumbnail());
+        }
+
+        return toProductSubCategoryResponse(productSubCategoryRepository.save(productSubCategory));
+    }
+
+    @Override
+    public void deleteProductSubCategoryById(Long id) {
+        ProductSubCategory productSubCategory = productSubCategoryRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.PRODUCT_SUB_CATEGORY_ID_NOT_FOUND));
+        productSubCategory.setIsActive(false);
+        productSubCategoryRepository.save(productSubCategory);
+    }
+
+
 }
