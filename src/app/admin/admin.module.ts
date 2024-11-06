@@ -22,7 +22,6 @@ import { UpdateProductComponent } from './feature/product/update-product/update-
 import { DivDraggerDirective } from './directive/div-dragger.directive';
 import { UpdateProductDetailComponent } from './feature/product-detail/update-product-detail/update-product-detail.component';
 import { CreateCategoryComponent } from './feature/product/create-category/create-category.component';
-import { UpdateCategoryComponent } from './feature/product/update-category/update-category.component';
 import { CreateSubCategoryComponent } from './feature/product/create-sub-category/create-sub-category.component';
 import { UpdateSubCategoryComponent } from './feature/product/update-sub-category/update-sub-category.component';
 
@@ -49,7 +48,6 @@ import { UpdateSubCategoryComponent } from './feature/product/update-sub-categor
     UpdateProductDetailComponent,
     DivDraggerDirective,
     CreateCategoryComponent,
-    UpdateCategoryComponent,
     CreateSubCategoryComponent,
     UpdateSubCategoryComponent
   ],

@@ -37,12 +37,36 @@ export class ProductService {
     return this.http.post<any>(`${this.url}/product`, formData);
   }
 
+  createNewCategory(data:any):Observable<any>{
+    return this.http.post<any>(`${this.url}/product-categories`,data)
+  }
+
   deleteProductById(id: number): Observable<any> {
     return this.http.delete<any>(`${this.url}/product/${id}`);
   }
 
   updateProductById(id: number, formData: FormData): Observable<any> {
     return this.http.put<any>(`${this.url}/product/${id}`, formData)
+  }
+
+  deleteProductCategoryById(id: number): Observable<any> {
+    return this.http.delete<any>(`${this.url}/product-categories/${id}`)
+  }
+
+  deleteProductSubCategoryById(id: number): Observable<any> {
+    return this.http.delete<any>(`${this.url}/product-sub-categories/${id}`)
+  }
+
+  updateProductSubCategoryById(formData: FormData, id: number): Observable<any> {
+    return this.http.put<any>(`${this.url}/product-sub-categories/${id}`, formData)
+  }
+
+  getProductSubCategoryById(id: number): Observable<ApiResponse<ProductSubCategories>> {
+    return this.http.get<any>(`${this.url}/product-sub-categories/${id}`)
+  }
+
+  createNewSubCategory(formData:FormData): Observable<any>{
+    return this.http.post<any>(`${this.url}/product-sub-categories`,formData)
   }
 
 

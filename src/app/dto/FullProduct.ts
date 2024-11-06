@@ -11,6 +11,7 @@ export interface FullProduct{
 export interface ProductSubCategory {
     id: number;
     name: string;
+    
     productResponseList: ProductDto[];
   }
 

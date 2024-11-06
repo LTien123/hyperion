@@ -34,6 +34,37 @@ export class ProductComponent implements OnInit {
     })
   }
 
+  deleteProductCategoryById(id: number) {
+    this.isSubmitting = true;
+    this.productService.deleteProductCategoryById(id).subscribe({
+      next: () => {
+        this.isSubmitting = false;
+        alert("deleted successfully");
+        this.getAllProduct();
+      },
+      error: () => {
+        this.isSubmitting = false;
+        alert("can't delete, please check again")
+      }
+    })
+  }
+
+  deleteProductSubCategoryById(id: number) {
+    this.isSubmitting = true;
+    this.productService.deleteProductSubCategoryById(id).subscribe({
+      next: () => {
+        this.isSubmitting = false;
+        alert("deleted successfully");
+        this.getAllProduct();
+      },
+      error: () => {
+        this.isSubmitting = false;
+        alert("can't delete, please check again")
+      }
+    })
+  }
+
+
   hasHandlebarStyle(product: ProductDto): boolean {
     return product.productDetailDtoList.some(detail => detail.productHandlebarDto?.style);
   }

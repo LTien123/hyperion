@@ -18,6 +18,7 @@ export interface ProductSubCategoryDto {
     id: number;
     name: string;
     
+    
 }
 
 export interface ProductCategoryDto {
