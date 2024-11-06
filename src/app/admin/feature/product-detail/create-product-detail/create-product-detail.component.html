@@ -7,7 +7,7 @@
 <div class="container mt-3">
   <h2>Create Product Detail</h2>
   <form [formGroup]="productDetailForm">
-    <!-- Product Name (ID) -->
+
     <div class="mb-3">
       <label for="productName">Product Name</label>
       <input type="text" id="productName" class="form-control" formControlName="product"
@@ -17,7 +17,7 @@
       </div>
     </div>
 
-    <!-- Color Dropdown -->
+
     <div class="mb-3">
       <label for="color">Color</label>
       <select id="color" class="form-control" formControlName="colorId">
@@ -29,7 +29,7 @@
       </div>
     </div>
 
-    <!-- Handlebar Style Dropdown -->
+
     <div class="mb-3">
       <label for="handlebar">Handlebar Style</label>
       <select id="handlebar" class="form-control" formControlName="handlebarId">
@@ -38,7 +38,7 @@
       </select>
     </div>
 
-    <!-- Material Dropdown -->
+
     <div class="mb-3">
       <label for="material">Material</label>
       <select id="material" class="form-control" formControlName="materialId">
@@ -47,7 +47,7 @@
       </select>
     </div>
 
-    <!-- Stock -->
+
     <div class="mb-3">
       <label for="stock">Stock</label>
       <input type="text" id="stock" class="form-control" formControlName="stock" placeholder="Enter stock quantity" />
@@ -56,7 +56,7 @@
       </div>
     </div>
 
-    <!-- Images Upload -->
+
     <div class="mb-3">
       <label for="images">Images</label>
       <input type="file" id="images" class="form-control" (change)="onFileChange($event)" multiple />

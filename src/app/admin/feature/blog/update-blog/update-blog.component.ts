@@ -15,6 +15,7 @@ export class UpdateBlogComponent {
   blog!: Blogs;
   blogForm!: FormGroup;
   blogCategories: BlogCategories[] = [];
+  isSubmitting = false;
 
   constructor(private blogService: BlogService, private fb: FormBuilder, private router: Router, private route: ActivatedRoute) {
     this.blogForm = this.fb.group({
@@ -46,7 +47,7 @@ export class UpdateBlogComponent {
     });
   }
 
- 
+
 
 
 
@@ -57,25 +58,27 @@ export class UpdateBlogComponent {
 
   onSubmit() {
     if (this.blogForm.valid) {
+      this.isSubmitting = true
       const formData = new FormData();
       formData.append('title', this.blogForm.get('title')?.value);
       formData.append('subTitle', this.blogForm.get('subTitle')?.value);
       formData.append('description', this.blogForm.get('description')?.value);
-      if(this.blogForm.value.thumbnail)
-      formData.append('thumbnail', this.blogForm.get('thumbnail')?.value);
+      if (this.blogForm.value.thumbnail)
+        formData.append('thumbnail', this.blogForm.get('thumbnail')?.value);
 
-      alert("your blog has been sent, wait for response");
-      this.blogService.updateBlogById(this.blogId,formData).subscribe({
+      
+      this.blogService.updateBlogById(this.blogId, formData).subscribe({
 
         next: (res) => {
           alert("your blog was updated successfully")
-          console.log('Blog updated successfully', res);
+          this.isSubmitting = false
           this.router.navigate(['/admin/blog']);
 
         },
         error: (err) => {
+          this.isSubmitting = false
           console.error('Error updating blog', err);
-      
+
         }
       })
     }

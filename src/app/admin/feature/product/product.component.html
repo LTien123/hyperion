@@ -10,7 +10,6 @@
         </div>
     </div>
     <ul>
-        <!-- Lặp qua danh sách Product Categories -->
         <li *ngFor="let category of data">
             <div class="d-flex justify-content-between">
                 <span (click)="toggleCategory(category.id)">{{ category.name }}</span>
@@ -21,7 +20,6 @@
             </div>
 
             <ul *ngIf="category.id === selectedCategoryId">
-                <!-- Lặp qua danh sách Product Sub Categories -->
                 <li *ngFor="let subCategory of category.productSubCategoryDtoList">
                     <div class="d-flex justify-content-between">
                         <span (click)="toggleSubCategory(subCategory.id)">{{ subCategory.name }}</span>
@@ -32,7 +30,6 @@
                     </div>
 
                     <ul *ngIf="subCategory.id === selectedSubCategoryId">
-                        <!-- Lặp qua danh sách Product Response -->
                         <li *ngFor="let product of subCategory.productResponseList">
                             <div class="product-name d-flex justify-content-between mt-5">
                                 <span (click)="toggleProduct(product.id)">{{ product.name }}</span>

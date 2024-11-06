@@ -1,8 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { ProductCategories } from '../../../dto/ProductCategories';
-import { ProductSubCategories } from '../../../dto/ProductSubCategories';
-import { Product } from '../../../dto/Product';
-import { ProductDetail } from '../../../dto/ProductDetail';
 import { ProductService } from '../../service/product.service';
 import { FullProduct, ProductDto } from '../../../dto/FullProduct';
 import { ProductDetailService } from '../../service/product-detail.service';
@@ -76,13 +72,13 @@ export class ProductComponent implements OnInit {
 
   toggleCategory(categoryId: number) {
     this.selectedCategoryId = this.selectedCategoryId === categoryId ? null : categoryId;
-    this.selectedSubCategoryId = null;  // Reset subcategory khi chuyển category
-    this.selectedProductId = null;  // Reset product khi chuyển category
+    this.selectedSubCategoryId = null;  
+    this.selectedProductId = null; 
   }
 
   toggleSubCategory(subCategoryId: number) {
     this.selectedSubCategoryId = this.selectedSubCategoryId === subCategoryId ? null : subCategoryId;
-    this.selectedProductId = null;  // Reset product khi chuyển subcategory
+    this.selectedProductId = null;  
   }
 
   toggleProduct(productId: number) {

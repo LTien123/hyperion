@@ -13,7 +13,7 @@
                 [ngClass]="{'is-invalid': loginForm.get('username')?.invalid && loginForm.get('username')?.touched}" placeholder=" "/>
                 <label for="username">Username:</label>
               <div *ngIf="loginForm.get('username')?.invalid && loginForm.get('username')?.touched" class="invalid-feedback">
-                Vui lòng nhập username
+                Please enter username
               </div>
             </div>
   
@@ -22,7 +22,7 @@
                 [ngClass]="{'is-invalid': loginForm.get('password')?.invalid && loginForm.get('password')?.touched}" placeholder=" " />
                 <label for="password">Password:</label>
               <div *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched" class="invalid-feedback" >
-                Password ít nhất 6 ký tự
+                password atleast 6 characters
               </div>
             </div>
             <button type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-lg btn-block w-100"
@@ -32,7 +32,7 @@
               </div>
   
             <button type="button" class="btn btn-danger btn-lg btn-block w-100" (click)="loginWithGoogle()">
-              <i class="fab fa-google me-2"></i>Đăng nhập với Google
+              <i class="fab fa-google me-2"></i>Login with google
             </button>
           </form>
         </div>

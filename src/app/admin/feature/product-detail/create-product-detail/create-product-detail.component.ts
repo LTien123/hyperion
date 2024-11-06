@@ -78,11 +78,11 @@ export class CreateProductDetailComponent {
   }
 
   fetchDropdownData() {
-    // Fetch colors
+
     this.productDetailService.getAllColors().subscribe(res => this.colors = res.result);
-    // Fetch handlebars
+
     this.productDetailService.getAllHandlebars().subscribe(res => this.handlebars = res.result);
-    // Fetch materials
+
     this.productDetailService.getAllMaterials().subscribe(res => this.materials = res.result);
   }
 
@@ -92,7 +92,7 @@ export class CreateProductDetailComponent {
       const fileArray: File[] = Array.from(files);
       this.productDetailForm.patchValue({ images: fileArray });
 
-      // Preview selected images
+
       this.selectedImages = [];
       for (let file of fileArray) {
         const reader = new FileReader();

@@ -35,8 +35,12 @@ export class BlogService {
     return this.http.delete<ApiResponse<any>>(`${this.url}/blog/${id}`)
   }
 
-  updateBlogById(id: number, formData:FormData): Observable<ApiResponse<Blogs>> {
-    return this.http.put<ApiResponse<Blogs>>(`${this.url}/blog/${id}`,formData)
+  updateBlogById(id: number, formData: FormData): Observable<ApiResponse<Blogs>> {
+    return this.http.put<ApiResponse<Blogs>>(`${this.url}/blog/${id}`, formData)
+  }
+
+  setCarousel(id: number): Observable<any> {
+    return this.http.put<any>(`${this.url}/blog/carousel/${id}`, {})
   }
 
 

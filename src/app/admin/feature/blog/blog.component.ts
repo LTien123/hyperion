@@ -21,7 +21,7 @@ export class BlogComponent implements OnInit {
   }
 
   getAllBlogs() {
-    this.blogService.getAllBlogs(this.currentPage -1, this.pageSize).subscribe({
+    this.blogService.getAllBlogs(this.currentPage - 1, this.pageSize).subscribe({
       next: (res) => {
         this.allBlogs = res.result.content;
         this.totalPages = res.result.totalPages;
@@ -32,13 +32,13 @@ export class BlogComponent implements OnInit {
     })
   }
 
-  deleteBlogById(id:number){
+  deleteBlogById(id: number) {
     this.blogService.deleteBlogById(id).subscribe({
-      next:(res)=>{
+      next: (res) => {
         alert("deleted successfully");
         this.getAllBlogs();
       },
-      error:()=>{
+      error: () => {
         alert("can't delete, check again");
       }
     })
@@ -59,13 +59,24 @@ export class BlogComponent implements OnInit {
   }
 
   goToPage() {
-    if(this.totalPages)
-    if (this.targetPage && this.targetPage >= 1 && this.targetPage <= this.totalPages) {
-      this.changePage(this.targetPage);
-      this.targetPage == null;
-    } else {
-      alert('please enter correctly');
-    }
+    if (this.totalPages)
+      if (this.targetPage && this.targetPage >= 1 && this.targetPage <= this.totalPages) {
+        this.changePage(this.targetPage);
+        this.targetPage == null;
+      } else {
+        alert('please enter correctly');
+      }
+  }
+
+  setCarousel(id: number) {
+    this.blogService.setCarousel(id).subscribe({
+      next: () => {
+        alert("carousel has been set")
+      },
+      error: () => {
+        alert("can't set carousel, check again");
+      }
+    })
   }
 
 

@@ -33,6 +33,7 @@
                 <td>{{ blog.updatedAt }}</td>
                 <td>{{ blog.userDto.username }}</td>
                 <td>
+                  <button class="btn btn-success btn-sm" (click)="setCarousel(blog.id)">Set carousel</button>
                   <button class="btn btn-primary btn-sm" [routerLink]="['update', blog.id]">Update</button>
                   <button class="btn btn-danger btn-sm" (click)="deleteBlogById(blog.id)">Delete</button>
                 </td>

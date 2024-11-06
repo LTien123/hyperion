@@ -1,7 +1,7 @@
 <div class="container mt-3">
     <h2>Create New Product</h2>
     <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
-      <!-- Name -->
+   
       <div class="mb-3">
         <label for="name">Name</label>
         <input type="text" id="name" class="form-control" formControlName="name" placeholder="Enter product name" />
@@ -10,7 +10,7 @@
         </div>
       </div>
   
-      <!-- Price -->
+
       <div class="mb-3">
         <label for="price">Price</label>
         <input type="text" id="price" class="form-control" formControlName="price" placeholder="Enter product price" />
@@ -19,7 +19,7 @@
         </div>
       </div>
   
-      <!-- Weight -->
+
       <div class="mb-3">
         <label for="weight">Weight</label>
         <input type="text" id="weight" class="form-control" formControlName="weight" placeholder="Enter product weight" />
@@ -28,7 +28,7 @@
         </div>
       </div>
   
-      <!-- Product Category Dropdown -->
+
       <div class="mb-3">
         <label for="productCategoryId">Product category</label>
         <select id="productCategoryId" class="form-control" formControlName="productCategoryId" (change)="onCategoryChange()">
@@ -40,8 +40,7 @@
           <small class="text-danger">Category is required</small>
         </div>
       </div>
-  
-      <!-- Product Sub Category Dropdown -->
+
       <div class="mb-3">
         <label for="productSubCategoryId">Product Sub Category</label>
         <select id="productSubCategoryId" class="form-control" formControlName="productSubCategoryId">
@@ -55,7 +54,7 @@
         </div>
       </div>
   
-      <!-- Thumbnail Image -->
+
       <div class="mb-3">
         <label for="thumbnail">Thumbnail Image</label>
         <input type="file" id="thumbnail" class="form-control" (change)="onFileChange($event)" />
@@ -64,7 +63,6 @@
         </div>
       </div>
   
-      <!-- Description with TinyMCE Editor -->
       <div class="mb-3">
         <label for="description">Description</label>
         <editor formControlName="description" apiKey="82zjfv71ttfqp08cvqel6a06gj0ytkmo5k09lkssw79fdrtk"
