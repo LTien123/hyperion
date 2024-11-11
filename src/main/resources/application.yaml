@@ -18,3 +18,7 @@ jwt:
   valid-duration: 2000
   refreshable-duration: 4000
 
+paypal:
+  client-id: AUYEvR5fZq7kDY7jigl-aht5rRsRWdORN1E7Xyr4qE3u8YOVvBAfwuFv-t9QIyFI0-YVD22Vnf0DFQQW
+  client-secret: EFRAVaqoSeDVt-2d21eNPG04nO7vcT1CznCWJQ52NPN-CCJYb7TW7Z_1X5Zs73z88XsKgRjX426K73dX
+  mode: sandbox # use #sandbox for testing and live for Production
