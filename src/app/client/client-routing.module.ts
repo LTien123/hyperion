@@ -9,6 +9,8 @@ import { ProductSubCategoriesComponent } from './feature/product-sub-categories/
 import { ProductComponent } from './feature/product/product.component';
 import { ProductDetailComponent } from './feature/product-detail/product-detail.component';
 import { CheckoutComponent } from './feature/checkout/checkout.component';
+import { PaymentComponent } from './feature/payment/payment.component';
+import { OrderComponent } from './feature/order/order.component';
 
 
 
@@ -21,7 +23,9 @@ const routes: Routes = [
       { path: 'product/:productCategoryName', component: ProductSubCategoriesComponent },
       { path: 'product/:productCategoryName/:productSubCategoryName', component: ProductComponent },
       { path: 'product/:productCategoryName/:productSubCategoryName/:productName', component: ProductDetailComponent },
-      { path: 'checkout', component: CheckoutComponent }
+      { path: 'checkout', component: CheckoutComponent },
+      { path: 'payment/:id', component: PaymentComponent },
+      { path: 'order/:id', component: OrderComponent }
     ]
   }
 

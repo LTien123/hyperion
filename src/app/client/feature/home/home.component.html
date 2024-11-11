@@ -1,5 +1,5 @@
 <div class="banner-carousel">
-    <div id="home-carousel" class="carousel slide" data-bs-ride="carousel" appCarouselSwipper>
+    <div id="home-carousel" class="carousel slide" data-bs-ride="carousel" >
         <div class="carousel-indicators">
             <button type="button" *ngFor="let item of carousels, let i = index" data-bs-target="#home-carousel"
                 [attr.data-bs-slide-to]="i" [class.active]="i === 0"></button>
@@ -31,7 +31,7 @@
         </a>
     </div>
     <div class="models-carousel">
-        <div id="models-carousel" class="carousel slide" data-bs-ride="carousel" appCarouselSwipper>
+        <div id="models-carousel" class="carousel slide" data-bs-ride="carousel" >
             <div class="carousel-indicators">
                 <button type="button" data-bs-target="#models-carousel"
                     *ngFor="let item of bikeCategories, let i  = index" [attr.data-bs-slide-to]="i"

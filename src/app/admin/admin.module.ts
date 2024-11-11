@@ -9,7 +9,6 @@ import { LayoutComponent } from './shared/layout/layout.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BlogComponent } from './feature/blog/blog.component';
 import { ProductComponent } from './feature/product/product.component';
-import { BillComponent } from './feature/bill/bill.component';
 import { CreateBlogComponent } from './feature/blog/create-blog/create-blog.component';
 import { EditorModule } from '@tinymce/tinymce-angular';
 import { UpdateBlogComponent } from './feature/blog/update-blog/update-blog.component';
@@ -24,6 +23,8 @@ import { UpdateProductDetailComponent } from './feature/product-detail/update-pr
 import { CreateCategoryComponent } from './feature/product/create-category/create-category.component';
 import { CreateSubCategoryComponent } from './feature/product/create-sub-category/create-sub-category.component';
 import { UpdateSubCategoryComponent } from './feature/product/update-sub-category/update-sub-category.component';
+import { OrderComponent } from './feature/order/order.component';
+import { NotificationComponent } from './feature/notification/notification.component';
 
 
 
@@ -36,7 +37,6 @@ import { UpdateSubCategoryComponent } from './feature/product/update-sub-categor
     LayoutComponent,
     BlogComponent,
     ProductComponent,
-    BillComponent,
     CreateBlogComponent,
     UpdateBlogComponent,
     SignUpComponent,
@@ -49,7 +49,9 @@ import { UpdateSubCategoryComponent } from './feature/product/update-sub-categor
     DivDraggerDirective,
     CreateCategoryComponent,
     CreateSubCategoryComponent,
-    UpdateSubCategoryComponent
+    UpdateSubCategoryComponent,
+    OrderComponent,
+    NotificationComponent
   ],
   imports: [
     CommonModule,
