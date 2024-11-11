@@ -15,9 +15,14 @@ public class HandleException {
     @ExceptionHandler(AppException.class)
     public ResponseEntity<ApiResponse<?>> handleAppException(AppException e) {
         ErrorCode errorCode = e.getErrorCode();
+
+        String message = e.getPlaceHolder() != null
+                ? String.format(errorCode.getMessage(), e.getPlaceHolder())
+                : errorCode.getMessage();
+
         return ResponseEntity.status(errorCode.getHttpStatusCode()).body(ApiResponse.builder()
                 .code(errorCode.getCode())
-                .message(errorCode.getMessage())
+                .message(message)
                 .build());
     }
 

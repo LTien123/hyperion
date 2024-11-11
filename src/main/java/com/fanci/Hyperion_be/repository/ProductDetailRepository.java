@@ -1,6 +1,7 @@
 package com.fanci.Hyperion_be.repository;
 
 import com.fanci.Hyperion_be.entity.ProductDetail;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -12,6 +13,7 @@ public interface ProductDetailRepository extends JpaRepository<ProductDetail, Lo
     List<ProductDetail> findProductDetailByProductName(String productName);
 
     @Query("select a from ProductDetail  a where a.id =?1 and a.isActive is true")
-    Optional<ProductDetail> findProductDetailById(Long id);
+    @NotNull
+    Optional<ProductDetail> findById(@NotNull Long id);
 
 }

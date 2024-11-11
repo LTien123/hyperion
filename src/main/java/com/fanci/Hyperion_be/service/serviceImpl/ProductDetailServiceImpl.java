@@ -93,7 +93,7 @@ public class ProductDetailServiceImpl implements ProductDetailService {
 
     @Override
     public ProductDetailResponse updateProductDetailById(Long id, UpdateProductDetailRequest request) throws IOException {
-        var productDetail = productDetailRepository.findProductDetailById(id).orElseThrow(() -> new AppException(ErrorCode.PRODUCT_DETAIL_ID_NOT_FOUND));
+        var productDetail = productDetailRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.PRODUCT_DETAIL_ID_NOT_FOUND));
         productDetailMapper.updateProductDetail(request,productDetail);
 
         //add handlebar
@@ -133,13 +133,13 @@ public class ProductDetailServiceImpl implements ProductDetailService {
 
     @Override
     public ProductDetailResponse findProductDetailById(Long id) {
-        var productDetail = productDetailRepository.findProductDetailById(id).orElseThrow(() -> new AppException(ErrorCode.PRODUCT_DETAIL_ID_NOT_FOUND));
+        var productDetail = productDetailRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.PRODUCT_DETAIL_ID_NOT_FOUND));
         return toProductDetailResponse(productDetail);
     }
 
     @Override
     public void deleteProductDetailById(Long id) {
-        var productDetail = productDetailRepository.findProductDetailById(id).orElseThrow(() -> new AppException(ErrorCode.PRODUCT_DETAIL_ID_NOT_FOUND));
+        var productDetail = productDetailRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.PRODUCT_DETAIL_ID_NOT_FOUND));
         productDetail.setActive(false);
         productDetailRepository.save(productDetail);
     }

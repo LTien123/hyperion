@@ -3,6 +3,7 @@ package com.fanci.Hyperion_be.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -32,4 +33,6 @@ public class Role {
     private Set<Permission> permissions;
 
 
+    @ManyToMany(mappedBy = "roles")
+    private List<Notification> notifications;
 }

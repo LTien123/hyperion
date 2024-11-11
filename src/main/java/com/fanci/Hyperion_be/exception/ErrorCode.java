@@ -42,13 +42,20 @@ public enum ErrorCode {
     PRODUCT_HANDLEBAR_ID_NOT_FOUND(1034, "product handlebar id is not found", HttpStatus.BAD_REQUEST),
     PRODUCT_PRICE_NOT_FOUND(1035, "product price not found", HttpStatus.BAD_REQUEST),
     PRODUCT_DETAIL_DUPLICATED(1036, "product detail is duplicated", HttpStatus.BAD_REQUEST),
-    PRODUCT_DETAIL_ID_NOT_FOUND(1037,"product detail id not found",HttpStatus.BAD_REQUEST ),
-    PRODUCT_NAME_NOT_FOUND(1038,"product name is not found" ,HttpStatus.BAD_REQUEST ),
+    PRODUCT_DETAIL_ID_NOT_FOUND(1037, "product detail id not found", HttpStatus.BAD_REQUEST),
+    PRODUCT_NAME_NOT_FOUND(1038, "product name is not found", HttpStatus.BAD_REQUEST),
     PERMISSION_NAME_DUPLICATED(1039, "permission name is duplicared", HttpStatus.BAD_REQUEST),
     PERMISSION_ID_NOT_FOUND(1040, "permission id not found", HttpStatus.BAD_REQUEST),
     USERNAME_DUPLICATED(1041, "username is duplicated", HttpStatus.BAD_REQUEST),
     USERNAME_NOT_FOUND(1042, "username is not found", HttpStatus.BAD_REQUEST),
-    PRODUCT_CATEGORY_ID_NOT_FOUND(1043, "product category id not found", HttpStatus.BAD_REQUEST);
+    PRODUCT_CATEGORY_ID_NOT_FOUND(1043, "product category id not found", HttpStatus.BAD_REQUEST),
+    PAYMENT_METHOD_ID_NOT_FOUND(1045, "payment method id not found", HttpStatus.BAD_REQUEST),
+    OUT_OF_STOCK(1046, "%s is out of stock", HttpStatus.BAD_REQUEST),
+    CANT_SEND_MAIL(1047, "can't send email", HttpStatus.BAD_REQUEST),
+    PAYPAL_TOKEN_NOT_VALID(1048,"paypal token not valid", HttpStatus.BAD_REQUEST),
+    PAYPAL_TOKEN_DENIED(1049,"paypal token not approved",HttpStatus.BAD_REQUEST),
+    NOTIFICATION_ID_NOT_FOUND(1050, "notification id not found", HttpStatus.BAD_REQUEST);
+
     private final int code;
     private final String message;
     private final HttpStatusCode httpStatusCode;

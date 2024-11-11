@@ -12,9 +12,25 @@ spring:
       enabled: true
       max-request-size: 10MB
       max-file-size: 10MB
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: minhbvht@gmail.com
+    password: lbzu dhyu mspn qgvu
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+paypal:
+  client:
+    id: ASACbEWkAEZS0MFIRzvjgSusBvaGFQqrMr9GNxFFZ_mwuhbgulqchtXXsLYTAT3DEKs64qux8eVnGGj9
+    secret: EG0_f8pKsMleUdpjVZ-67Jmf2AXVIadVbU9UCCKFtzx6SnBfzkv4h0kl4tucxw9h4B7Ei-k-F-fZ2-_C
+  mode: sandbox
 
 jwt:
   signerKey: "u1w4lfbIlOqekNYgl0FMfLqEMeICbkOA8lHyyJm9iXU/ZH5uxuz0Wle1+lNOm3Yi"
   valid-duration: 2000
   refreshable-duration: 4000
-

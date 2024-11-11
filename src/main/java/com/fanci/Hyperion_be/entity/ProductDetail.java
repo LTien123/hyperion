@@ -42,5 +42,8 @@ public class ProductDetail {
 
     @OneToMany(mappedBy = "productDetail")
     private List<ProductImage> productImages;
+
+    @OneToMany(mappedBy = "productDetail")
+    private List<OrderDetail> orderDetails;
 }
 
