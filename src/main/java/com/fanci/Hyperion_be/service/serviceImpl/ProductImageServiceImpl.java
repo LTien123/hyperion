@@ -36,19 +36,33 @@ public class ProductImageServiceImpl implements ProductImageService {
         if (images == null || images.isEmpty()) {
             return null;
         }
+
         List<ProductImage> productImages = new ArrayList<>();
+
+        // Lặp qua các hình ảnh và tải lên Cloudinary
         for (MultipartFile image : images) {
             Map<String, Object> uploadResult = cloudinary.uploader().upload(image.getBytes(), ObjectUtils.emptyMap());
             String url = uploadResult.get("url").toString();
             String publicId = uploadResult.get("public_id").toString();
+
+            // Tạo đối tượng ProductImage
             ProductImage productImage = ProductImage.builder()
                     .url(url)
                     .publicId(publicId)
                     .productDetail(productDetail)
                     .build();
-            productImages.add(productImageRepository.save(productImage));
+
+            // Thêm vào danh sách thay vì lưu ngay
+            productImages.add(productImage);
         }
-        return productImages.stream().map(this::toProductImageResponse).toList();
+
+        // Sử dụng saveAll để lưu tất cả các đối tượng một lần
+        List<ProductImage> savedProductImages = productImageRepository.saveAll(productImages);
+
+        // Chuyển đổi danh sách thành ProductImageResponse và trả về
+        return savedProductImages.stream()
+                .map(this::toProductImageResponse)
+                .toList();
     }
 
     @Override

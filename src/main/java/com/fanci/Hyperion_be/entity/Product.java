@@ -35,7 +35,7 @@ public class Product implements UploadThumbnail{
     @Column(name ="thumbnail_public_id")
     private String thumbnailPublicId;
 
-    @Column(name = "description")
+    @Column(name = "description", columnDefinition = "TEXT")
     private String description;
 
     @Column(name = "is_active")

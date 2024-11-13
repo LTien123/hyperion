@@ -14,7 +14,7 @@ public class MailContent {
             "<p>You will receive your order in the afterlife, please be patient!!!!!</p>" +
             "<p>Your order ID is <span style='font-weight: bold;'> %s </span>, contact us if you don't receive your order.</p>" +
             "<p>Click here to see your order:</p>" +
-            "<a href='https://www.example.com' style='display: inline-block; padding: 10px 20px; background-color: #4CAF50; color: #ffffff; text-decoration: none; border-radius: 4px;'>Click here</a>" +
+            "<a href='http://localhost:4200/order/%s' style='display: inline-block; padding: 10px 20px; background-color: #4CAF50; color: #ffffff; text-decoration: none; border-radius: 4px;'>Click here</a>" +
             "</div>" +
             "</div>" +
             "</body>" +
@@ -29,7 +29,7 @@ public class MailContent {
             "<p>Something wrong happened, please order again or contact us for detail </p>" +
             "<p>Your order ID is <span style='font-weight: bold;'> %s </span>, contact us if you don't receive your order.</p>" +
             "<p>Click here to see your order:</p>" +
-            "<a href='https://www.example.com' style='display: inline-block; padding: 10px 20px; background-color: #4CAF50; color: #ffffff; text-decoration: none; border-radius: 4px;'>Click here</a>" +
+            "<a  href='http://localhost:4200/order/%s' style='display: inline-block; padding: 10px 20px; background-color: #4CAF50; color: #ffffff; text-decoration: none; border-radius: 4px;'>Click here</a>" +
             "</div>" +
             "</div>" +
             "</body>" +
@@ -43,7 +43,7 @@ public class MailContent {
             "<h3>Your order has been send to our staff. we will contact you very soon</h3>" +
             "<p>Your order ID is <span style='font-weight: bold;'> %s </span>, contact us if you don't receive your order.</p>" +
             "<p>Click here to see your order:</p>" +
-            "<a href='https://www.example.com' style='display: inline-block; padding: 10px 20px; background-color: #4CAF50; color: #ffffff; text-decoration: none; border-radius: 4px;'>Click here</a>" +
+            "<a href='http://localhost:4200/order/%s' style='display: inline-block; padding: 10px 20px; background-color: #4CAF50; color: #ffffff; text-decoration: none; border-radius: 4px;'>Click here</a>" +
             "</div>" +
             "</div>" +
             "</body>" +

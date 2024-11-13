@@ -45,8 +45,6 @@ public class NotificationServiceImpl implements NotificationService {
     private final UserRepository userRepository;
 
 
-    private final NotificationMapper notificationMapper;
-
     public void sendOrderMail(String to, String subject, String htmlContent, Long billId) {
         MimeMessage message = mailSender.createMimeMessage();
         try {
@@ -54,7 +52,7 @@ public class NotificationServiceImpl implements NotificationService {
             helper.setFrom(senderMail);
             helper.setTo(to);
             helper.setSubject(subject);
-            helper.setText(String.format(htmlContent, billId), true);
+            helper.setText(String.format(htmlContent, billId, billId), true);
 
             mailSender.send(message);
 
