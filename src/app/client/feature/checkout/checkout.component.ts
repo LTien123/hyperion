@@ -2,6 +2,11 @@ import { Component } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { CartService } from '../../service/cart.service';
 import { CartItem } from '../../../dto/CartItem';
+import { PaymentMethod } from '../../../dto/PaymentMethod';
+import { CheckoutService } from '../../service/checkout.service';
+import { OrderForm } from '../../../dto/OrderForm';
+import { Router } from '@angular/router';
+import { Order } from '../../../dto/Order';
 
 @Component({
   selector: 'app-checkout',
@@ -9,21 +14,18 @@ import { CartItem } from '../../../dto/CartItem';
   styleUrl: './checkout.component.scss'
 })
 export class CheckoutComponent {
-  paymentOptions = [{
-    'method': 'Cash',
-    'logo': '<i class="fa-solid fa-money-bill-1-wave"></i>'
-  }, {
-    'method': 'PayPal',
-    'logo': '<i class="fa-brands fa-paypal"></i>'
-  }];
+  order!:Order;
+  isSubmitting = false;
+  paymentMethods: PaymentMethod[] = []
   customerForm!: FormGroup;
   totalPrice: number = 0;
   cart: CartItem[] = [];
 
-  constructor(private fb: FormBuilder, private cartService: CartService) { }
+  constructor(private fb: FormBuilder, private cartService: CartService, private checkoutService: CheckoutService, private router: Router) { }
 
   ngOnInit(): void {
     this.getCartItem()
+    this.getPaymentMethod()
 
     this.customerForm = this.fb.group({
       customerName: ['', Validators.required],
@@ -31,13 +33,43 @@ export class CheckoutComponent {
       phoneNumber: ['', Validators.required],
       address: ['', Validators.required],
       note: [''],
-      paymentMethod: [this.paymentOptions[0].method, Validators.required] 
+      paymentMethod: ['', Validators.required]
     });
   }
 
   onSubmit(): void {
     if (this.customerForm.valid) {
-      console.log(this.customerForm.value);
+      this.isSubmitting = true;
+      const orderForm: OrderForm = {
+        customerName: this.customerForm.get("customerName")?.value,
+        email: this.customerForm.get("email")?.value,
+        phoneNumber: this.customerForm.get("phoneNumber")?.value,
+        address: this.customerForm.get("address")?.value,
+        note: this.customerForm.get("note")?.value,
+        paymentMethodId: this.customerForm.get("paymentMethod")?.value,
+        createNewOrderDetailDtoList: this.cart.map(item => ({
+          productDetailId: item.productDetail.id,
+          amount: item.amount
+        }))
+      };
+      console.log(orderForm);
+
+      this.checkoutService.finishCheckout(orderForm).subscribe({
+        next: (res) => {
+          if (res.result.paymentUrl) {
+            this.cartService.clearCart();
+            window.location.href = res.result.paymentUrl;
+          }else{
+            this.cartService.clearCart();
+            this.router.navigate(['/payment',res.result.id])
+          }
+
+        },
+        error: (err) => {
+          console.log(err);
+          this.isSubmitting = false;
+        }
+      })
     }
   }
 
@@ -48,5 +80,12 @@ export class CheckoutComponent {
         return sum + (item.productDetail.productDto.price * item.amount);
       }, 0);
     }))
+  }
+
+  getPaymentMethod() {
+    this.checkoutService.getAllPaymentMethod().subscribe((res => {
+      this.paymentMethods = res.result;
+    }))
+
   }
 }

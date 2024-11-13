@@ -41,7 +41,6 @@
 
                 <div class="carousel-item" [class.active]=" i === 0" *ngFor="let item of bikeCategories, let i = index">
                     <a [routerLink]="['product',item.productCategoryDto.name,item.name]" ><img [src]=item.thumbnailUrl alt="..."></a>
-                    <div class="description">{{item.description}}</div>
                 </div>
 
                 <button class="carousel-control-prev" type="button" data-bs-target="#models-carousel"

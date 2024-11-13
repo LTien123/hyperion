@@ -47,11 +47,11 @@
                 <div class="mb-3">
                     <label for="paymentMethod" class="form-label">Payment Method</label>
                     <div id="paymentMethod" class="form-group d-flex justify-content-around">
-                        <div *ngFor="let option of paymentOptions" class="form-check">
-                            <input class="form-check-input" type="radio" [value]="option.method"
-                                formControlName="paymentMethod" [id]="option.method">
-                            <label class="form-check-label" [for]="option.method"><span
-                                    [innerHTML]="option.logo"></span> {{ option.method }}</label>
+                        <div *ngFor="let paymentMethod of paymentMethods" class="form-check">
+                            <input class="form-check-input" type="radio" [value]="paymentMethod.id"
+                                formControlName="paymentMethod" [id]="paymentMethod.name">
+                            <label class="form-check-label" [for]="paymentMethod.name"><span
+                                    [innerHTML]="paymentMethod.fontawesomeLogo"></span> {{ paymentMethod.name }}</label>
                         </div>
                     </div>
                     <div
@@ -98,5 +98,12 @@
 
         </div>
     </div>
-
 </div>
+
+<div *ngIf="isSubmitting" class="d-flex justify-content-center align-items-center"
+  style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.5); z-index: 1050;">
+  <div class="spinner-border text-light" role="status">
+    <span class="visually-hidden">Loading...</span>
+  </div>
+</div>
+<div class="container m-3">

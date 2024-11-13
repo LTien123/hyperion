@@ -10,24 +10,30 @@ import { PaymentService } from '../../service/payment.service';
 export class PaymentComponent implements OnInit {
   isSubmitting = false;
   isSuccess!: boolean;
-  orderId:number = 0;
+  orderId: number = 0;
   constructor(private route: ActivatedRoute, private paymentService: PaymentService) { }
   ngOnInit(): void {
     this.isSubmitting = true;
     const orderId = this.route.snapshot.paramMap.get('id');
-    const token = this.route.snapshot.queryParams['token'];  
-    console.log(orderId,token);
-    if (orderId && token)
-      this.paymentService.setPendingById(Number(orderId),token).subscribe({
-        next:(res)=>{
+    const token = this.route.snapshot.queryParams['token'];
+    if (orderId && token) {
+      this.paymentService.setPendingById(Number(orderId), token).subscribe({
+        next: (res) => {
           this.isSubmitting = false;
           this.isSuccess = true;
           this.orderId = res.result.id;
-        },error:(err)=>{
+        }, error: (err) => {
           this.isSuccess = false;
           this.isSubmitting = false;
         }
       })
+    }
+    if (orderId && !token) {
+      this.isSubmitting = false;
+      this.isSuccess = true;
+      this.orderId = Number(orderId);
+    }
+
   }
 
 }

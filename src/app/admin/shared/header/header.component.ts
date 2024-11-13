@@ -36,8 +36,12 @@ export class HeaderComponent implements OnInit {
 
   getAllNotification() {
     this.notificationService.getAllNotification(this.currentNotificationPage, this.pageSize, Number(this.userInfo?.sub)).subscribe({
-      next: () => {
-        this.notificationAlert = true;
+      next: (res) => {
+        if(res.result.content.some(noti => noti.notificationStatus == 'NEW')){
+          this.notificationAlert = true;
+        }else{
+          this.notificationAlert = false;
+        }
       }, error: () => {
 
       }

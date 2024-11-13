@@ -34,6 +34,14 @@ export class CreateProductDetailComponent {
     });
   }
 
+  selectedColor: string = '';
+
+  updateSelectedColor(event: Event) {
+    const selectedId = (event.target as HTMLSelectElement).value;
+    const selectedColorObj = this.colors.find(color => color.id === Number(selectedId));
+    this.selectedColor = selectedColorObj ? selectedColorObj.color : '';
+  }
+
 
   ngOnInit(): void {
     this.route.params.subscribe((param) => {

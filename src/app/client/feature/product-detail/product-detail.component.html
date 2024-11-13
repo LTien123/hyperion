@@ -74,13 +74,18 @@
                             (click)="increase()">+</button>
                     </div>
                 </div>
-                <button class="add-button btn btn-primary" (click)="addToCart()" [disabled]="counter === 0">Add to
+                <button id="add-to-cart" class="add-button btn btn-primary" (click)="addToCart()" [disabled]="counter === 0">Add to
                     cart</button>
             </div>
         </div>
     </div>
 
-    <div class="description m-4">
-        <div [innerHTML]="product?.description"></div>
+
+
+    <div class="description p-5" >
+        <div [innerHTML]="trustedHtml"></div>
     </div>
+
 </div>
+
+

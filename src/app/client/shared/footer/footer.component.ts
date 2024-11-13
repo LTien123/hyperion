@@ -24,7 +24,7 @@ export class FooterComponent {
   getData() {
     this.footerService.getAllBlogCategories().subscribe((res) => {
       this.blogCategories = res.result;
-      const aboutUsId = this.getCategoryId("About us");
+      const aboutUsId = this.getCategoryId("About Us");
       const supportId = this.getCategoryId("Support");
       const legalId = this.getCategoryId("Legal");
       if (aboutUsId) {
@@ -44,8 +44,6 @@ export class FooterComponent {
         })
       }
     })
-
-
   }
 
   private getCategoryId(categoryName: string): number | undefined {

@@ -5,6 +5,7 @@ import { CartService } from '../../service/cart.service';
 import { CartItem } from '../../../dto/CartItem';
 import { Product, ProductColorDto, ProductHandlebarDto, ProductMaterialDto } from '../../../dto/Product';
 import { ProductDetail, ProductImageResponse } from '../../../dto/ProductDetail';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-product-detail',
@@ -22,13 +23,14 @@ export class ProductDetailComponent {
   currentProductDetail: ProductDetail | undefined;
   productName: string | undefined;
   product: Product | undefined
+  trustedHtml: any;
   productDetail: ProductDetail[] = [];
   productColors: ProductColorDto[] = [];
   productHandlebars: ProductHandlebarDto[] = [];
   productMaterials: ProductMaterialDto[] = [];
   filteredImages: ProductImageResponse[] = [];
 
-  constructor(private productDetailService: ProductDetailService, private cartService: CartService, private route: ActivatedRoute, private router: Router) { }
+  constructor(private productDetailService: ProductDetailService, private cartService: CartService, private route: ActivatedRoute, private router: Router, private sanitizer:DomSanitizer) { }
 
   ngOnInit(): void {
     this.route.params.subscribe(param => {
@@ -94,8 +96,9 @@ export class ProductDetailComponent {
 
     if (this.productName)
       this.productDetailService.getProductByProductName(this.productName).subscribe({
-        next: (res: { result: Product | undefined; }) => {
+        next: (res) => {
           this.product = res.result;
+          this.trustedHtml = this.sanitizer.bypassSecurityTrustHtml(this.product.description);
 
         }
       })
@@ -113,10 +116,13 @@ export class ProductDetailComponent {
         amount: this.counter
       };
       this.cartService.addToCart(cartItem)
+      alert("added to cart successfully")
     } else {
       alert("error! product is not existed please select again")
     }
   }
+
+  
 
   selectHandlebar(handlebar: string) {
     this.selectedHandlebar = handlebar;

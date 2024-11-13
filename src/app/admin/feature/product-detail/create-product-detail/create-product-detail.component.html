@@ -20,9 +20,9 @@
 
     <div class="mb-3">
       <label for="color">Color</label>
-      <select id="color" class="form-control" formControlName="colorId">
+      <select id="color" class="form-control" style="width: 10vw;" formControlName="colorId" (change)="updateSelectedColor($event)" [ngStyle]="{'background-color': selectedColor}">
         <option value="">Select Color</option>
-        <option *ngFor="let color of colors" [value]="color.id">{{ color.color }}</option>
+        <option *ngFor="let color of colors" [value]="color.id"  [ngStyle]="{'background-color': color.color}" > &nbsp;</option>
       </select>
       <div *ngIf="productDetailForm.get('colorId')?.invalid && productDetailForm.get('colorId')?.touched">
         <small class="text-danger">Color is required</small>

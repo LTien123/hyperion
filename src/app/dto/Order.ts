@@ -10,6 +10,7 @@ export interface Order {
     createdAt: Date;  // Array of [year, month, day, hour, minute, second]
     status: string;
     paymentMethodResponse: PaymentMethod;
+    paymentUrl:string | null;
     orderDetailResponseList: OrderDetail[];
 }
 

@@ -12,6 +12,7 @@ import { Router } from '@angular/router';
 export class SignUpComponent implements OnInit {
   signUpForm!: FormGroup;
   roles: Role[] = [];
+  isSubmitting = false;
 
   constructor(
     private fb: FormBuilder,
@@ -35,7 +36,9 @@ export class SignUpComponent implements OnInit {
   }
 
   onSubmit(): void {
+
     if (this.signUpForm.valid) {
+      this.isSubmitting = true
       const formData = new FormData();
       formData.append('username', this.signUpForm.value.username);
       formData.append('password', this.signUpForm.value.password);
@@ -55,12 +58,15 @@ export class SignUpComponent implements OnInit {
       // }
       this.signUpService.signUp(formData).subscribe({
         next: (res) => {
+
           alert("created new user successfully")
+          this.isSubmitting = false;
           this.router.navigate(['/admin']);
         },
         error: (error) => {
 
           alert("error, please create again")
+          this.isSubmitting = false;
         }
       })
     }
