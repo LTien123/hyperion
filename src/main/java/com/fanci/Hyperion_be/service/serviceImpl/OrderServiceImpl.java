@@ -114,8 +114,13 @@ public class OrderServiceImpl implements OrderService {
             }
             var orderResponse = toOrderResponse(order);
             orderResponse.setPaymentUrl(paypalService.createOrder(totalPrice, order.getId()));
+
+
             return orderResponse;
+
         }
+
+
         return null;
 
     }

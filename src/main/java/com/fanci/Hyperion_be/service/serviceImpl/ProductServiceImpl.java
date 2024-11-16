@@ -17,6 +17,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -68,6 +69,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Transactional
+    @PreAuthorize("hasAnyRole('ADMIN','SALE')")
     public ProductResponse createNewProduct(CreateNewProductRequest request) throws IOException {
         if (productRepository.findProductByProductName(request.getName()).isPresent()) {
             throw new AppException(ErrorCode.PRODUCT_NAME_DUPLICATED);
@@ -83,6 +85,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR','SALE')")
     public ProductResponse updateProductById(UpdateProductRequest request, Long id) throws IOException {
         Product product = productRepository.findProductByProductId(id).orElseThrow(() -> new AppException(ErrorCode.PRODUCT_ID_NOT_FOUND));
         product.setUpdatedAt(LocalDateTime.now());
@@ -95,6 +98,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR','SALE')")
     public void deleteProductById(Long id) {
         Product product = productRepository.findProductByProductId(id).orElseThrow(() -> new AppException(ErrorCode.PRODUCT_ID_NOT_FOUND));
         product.setIsActive(false);
