@@ -39,4 +39,9 @@ export class AuthService {
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
     return this.http.post<ApiResponse<any>>(`${this.url}/auth/introspect`, { token }, { headers })
   }
+
+  refreshToken(token: string): Observable<ApiResponse<any>> {
+    const headers = new HttpHeaders().set('Content-Type', 'application/json');
+    return this.http.post<ApiResponse<any>>(`${this.url}/auth/refresh`, { token }, { headers })
+  }
 }

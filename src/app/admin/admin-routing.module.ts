@@ -24,7 +24,7 @@ import { AuthGuard } from './guard/auth.guard';
 import { provideHttpClient, withFetch, withInterceptors, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { InjectableRxStompConfig, RxStompService, rxStompServiceFactory } from '@stomp/ng2-stompjs';
 import { myStompConfig } from '../../../stomp.config';
-import { interceptorInterceptor } from '../interceptor.interceptor';
+
 
 const routes: Routes = [{
   path: '', component: LayoutComponent, canActivate: [AuthGuard], children: [
@@ -55,8 +55,7 @@ const routes: Routes = [{
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   providers: [
-    provideHttpClient(withFetch(), withInterceptors([interceptorInterceptor])),
-    { provide: HTTP_INTERCEPTORS, useFactory: () => interceptorInterceptor, multi: true },
+    
   ],
   exports: [RouterModule]
 })

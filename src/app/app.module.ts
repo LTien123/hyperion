@@ -8,7 +8,7 @@ import { NotFoundComponent } from './not-found/not-found.component';
 import { RouterModule } from '@angular/router';
 import { InjectableRxStompConfig, RxStompService, rxStompServiceFactory } from '@stomp/ng2-stompjs';
 import { myStompConfig } from '../../stomp.config';
-import { interceptorInterceptor } from './interceptor.interceptor';
+import { interceptor } from './interceptor.interceptor';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; 
 import { ToastrModule } from 'ngx-toastr'; 
 
@@ -28,7 +28,8 @@ import { ToastrModule } from 'ngx-toastr';
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [
-    provideHttpClient(withFetch(), withInterceptors([interceptorInterceptor])),
+    provideHttpClient(withFetch(), withInterceptorsFromDi()),
+    { provide: HTTP_INTERCEPTORS, useClass: interceptor, multi: true },
     { provide: InjectableRxStompConfig, useValue: myStompConfig },
     { provide: RxStompService, useFactory: rxStompServiceFactory, deps: [InjectableRxStompConfig] }
   ],
