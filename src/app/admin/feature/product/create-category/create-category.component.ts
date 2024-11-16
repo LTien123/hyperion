@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ProductService } from '../../../service/product.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-create-category',
@@ -12,7 +13,7 @@ export class CreateCategoryComponent {
   isSubmitting = false;
   categoryForm!: FormGroup
 
-  constructor(private fb: FormBuilder, private productService: ProductService, private router: Router) {
+  constructor(private fb: FormBuilder, private productService: ProductService, private router: Router, private toastrService:ToastrService) {
     this.categoryForm = this.fb.group({
       name: ['', [Validators.required]],
 
@@ -25,12 +26,12 @@ export class CreateCategoryComponent {
       this.productService.createNewCategory(this.categoryForm.value).subscribe({
         next:()=>{
           this.isSubmitting= false;
-          alert("created successfully");
+          this.toastrService.success(`Category created successfully`, 'Category Notification');
           this.router.navigate(['admin/product']);
         },
         error:(err)=>{
           this.isSubmitting = false;
-          alert("can't create, check again")
+          this.toastrService.error(`can't create new category`, 'Category Notification');
           console.log(err)
         }
       })

@@ -7,6 +7,7 @@ import { CheckoutService } from '../../service/checkout.service';
 import { OrderForm } from '../../../dto/OrderForm';
 import { Router } from '@angular/router';
 import { Order } from '../../../dto/Order';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-checkout',
@@ -21,7 +22,7 @@ export class CheckoutComponent {
   totalPrice: number = 0;
   cart: CartItem[] = [];
 
-  constructor(private fb: FormBuilder, private cartService: CartService, private checkoutService: CheckoutService, private router: Router) { }
+  constructor(private fb: FormBuilder, private cartService: CartService, private checkoutService: CheckoutService, private router: Router, private toastrService:ToastrService) { }
 
   ngOnInit(): void {
     this.getCartItem()
@@ -57,17 +58,14 @@ export class CheckoutComponent {
       this.checkoutService.finishCheckout(orderForm).subscribe({
         next: (res) => {
           if (res.result.paymentUrl) {
-            this.cartService.clearCart();
             window.location.href = res.result.paymentUrl;
-          }else{
-            this.cartService.clearCart();
+          }else{         
             this.router.navigate(['/payment',res.result.id])
           }
 
         },
         error: (err) => {
-          console.log(err);
-          this.isSubmitting = false;
+          this.toastrService.error(`can't finish checkout please check again`, `Checkout Notification`)
         }
       })
     }

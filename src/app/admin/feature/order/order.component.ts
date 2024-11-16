@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Order } from '../../../dto/Order';
 import { OrderService } from '../../service/order.service';
+import { AuthService } from '../../../auth/service/auth.service';
+import { JwtPayloadDto } from '../../../dto/JwtPayloadDto';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-order',
@@ -9,6 +12,7 @@ import { OrderService } from '../../service/order.service';
 })
 export class OrderComponent implements OnInit {
   isSubmitting = false;
+  userInfo: JwtPayloadDto | undefined;
   currentPage: number = 1;
   pageSize: number = 9;
   allOrders: Order[] | undefined;
@@ -16,10 +20,11 @@ export class OrderComponent implements OnInit {
   totalPages: number | undefined;
   targetPage: number | undefined;
 
-  constructor(private orderService: OrderService) { }
+  constructor(private orderService: OrderService, private authService: AuthService, private toastrService: ToastrService) { }
 
   ngOnInit(): void {
     this.getAllOrders();
+    this.getUserInfo();
   }
 
   getAllOrders() {
@@ -31,42 +36,53 @@ export class OrderComponent implements OnInit {
         this.totalPages = res.result.totalPages;
         this.pageAmount = [];
         this.pageAmount = this.getPageAmount();
+      }, error: (err) => {
+        this.isSubmitting = false;
+        this.toastrService.error(`Can't open order`, 'Order Notification');
       }
     })
   }
+  getUserInfo() {
+    this.userInfo = this.authService.getUserInfo();
+    this.userInfo?.scope
+  }
 
-  confirmOrder(id:number){
+  checkScope(roles: string[]): boolean {
+    return roles.some(role => this.userInfo?.scope.includes(role))
+  }
+
+  confirmOrder(id: number) {
     this.isSubmitting = true;
     this.orderService.confirmOrder(id).subscribe({
-      next: (res) =>{
+      next: (res) => {
         this.isSubmitting = false;
         this.getAllOrders();
-        alert(`order id ${id} is confirmed`)
-      },error:()=>{
+        this.toastrService.success(`order id ${id} is confirmed`, 'Order Notification');
+      }, error: () => {
         this.isSubmitting = false;
-        alert(`can't confirm order id ${id}, check again`)
+        this.toastrService.error(`can't confirm order id ${id}, check again`, 'Order Notification');
       }
     })
   }
 
-  denyOrder(id:number){
+  denyOrder(id: number) {
     this.isSubmitting = true;
     this.orderService.denyOrder(id).subscribe({
-      next: (res) =>{
+      next: (res) => {
         this.isSubmitting = false;
         this.getAllOrders();
-        alert(`order id ${id} is denied`)
-      },error:()=>{
+        this.toastrService.success(`order id ${id} is denied`, 'Order Notification');
+      }, error: () => {
         this.isSubmitting = false;
-        alert(`can't deny order id ${id}, check again`)
+        this.toastrService.error(`can't deny order id ${id}, check again`, 'Order Notification');
       }
     })
   }
 
-  totalPrice(order:Order):number{
+  totalPrice(order: Order): number {
     return order.orderDetailResponseList.reduce((total, detail) => {
       return total + (detail.productDetailResponse.productDto.price * detail.amount);
-  }, 0);
+    }, 0);
   }
 
   getPageAmount(): any[] {
@@ -88,11 +104,11 @@ export class OrderComponent implements OnInit {
         this.changePage(this.targetPage);
         this.targetPage == null;
       } else {
-        alert('please enter correctly');
+        this.toastrService.error(`can't navigate, please enter again`, 'navigate Notification');
       }
   }
 
-  navigateNewWindow(id:number){
+  navigateNewWindow(id: number) {
     window.open(`/order/${id}`, '_blank')
   }
 }

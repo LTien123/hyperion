@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NewsService } from '../../service/news.service';
 import { Blogs } from '../../../dto/Blog';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-news',
@@ -8,7 +9,7 @@ import { Blogs } from '../../../dto/Blog';
   styleUrl: './news.component.scss'
 })
 export class NewsComponent {
-  constructor(private newService: NewsService) { }
+  constructor(private newService: NewsService, private toastrService:ToastrService) { }
   targetPage: number | undefined | null;
   news: Blogs[] = [];
   totalPages!: number;
@@ -21,14 +22,18 @@ export class NewsComponent {
   }
 
   getAllNews() {
-    this.newService.getAllNews(this.currentPage - 1, this.pageSize).subscribe(
-      (res) => {
-        this.news = res.result.content
-        this.totalPages = res.result.totalPages;
-        this.pageAmount = [];
-        this.pageAmount = this.getPageAmount();
-
-      })
+    this.newService.getAllBlogCategories().subscribe((res)=>{
+      const newsId = res.result.find(blog => blog.name = "News")?.id;
+      this.newService.getAllNews(Number(newsId),this.currentPage - 1, this.pageSize).subscribe(
+        (res) => {
+          this.news = res.result.content
+          this.totalPages = res.result.totalPages;
+          this.pageAmount = [];
+          this.pageAmount = this.getPageAmount();
+  
+        })
+    })
+   
   }
 
   getPageAmount(): any[] {
@@ -50,7 +55,7 @@ export class NewsComponent {
       this.currentPage = this.targetPage;
       this.changePage(this.targetPage);
     } else {
-      alert('please enter correctly');
+      this.toastrService.error(`can't navigate to page ${this.targetPage}`, `Navigate Notification`)
     }
   }
 }

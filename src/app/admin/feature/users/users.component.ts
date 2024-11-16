@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { UsersService } from '../../service/users.service';
 import { Router } from '@angular/router';
 import { User } from '../../../dto/User';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-users',
@@ -10,7 +11,7 @@ import { User } from '../../../dto/User';
 })
 export class UsersComponent implements OnInit {
   Users: User[] = [];
-  constructor(private usersService: UsersService, private router: Router) { }
+  constructor(private usersService: UsersService, private router: Router, private toastrService: ToastrService) { }
 
   ngOnInit(): void {
     this.getAllUsers()
@@ -24,14 +25,15 @@ export class UsersComponent implements OnInit {
     })
   }
 
-  deleteUser(id:number){
+  deleteUser(id: number) {
     this.usersService.deleteUserById(id).subscribe({
-      next:(res)=>{
-        alert("deleted successfully");
+      next: (res) => {
+
+        this.toastrService.success(`user deleted successfully`, `User Notification`)
         this.getAllUsers()
       },
-      error:(error)=>{
-        alert("can't delete, please check again");
+      error: (error) => {
+        this.toastrService.success(`can't delete user, check again`, `User Notification`)
       }
     })
   }

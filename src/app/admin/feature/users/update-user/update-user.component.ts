@@ -6,6 +6,7 @@ import { Role } from '../../../../dto/Role';
 import { UpdateUserService } from '../../../service/update-user.service';
 import { User } from '../../../../dto/User';
 import { UsersService } from '../../../service/users.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-update-user',
@@ -20,9 +21,10 @@ export class UpdateUserComponent {
   user!: User;
   constructor(
     private fb: FormBuilder,
-    private usersService:UsersService,
+    private usersService: UsersService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private toastrService: ToastrService
   ) {
     this.signUpForm = this.fb.group({
       fullName: ['', Validators.required],
@@ -40,12 +42,12 @@ export class UpdateUserComponent {
         next: (res) => {
           this.user = res.result;
           this.getAllRoles()
-          
+
         }
       })
     })
 
-   
+
   }
 
   initForm(): void {
@@ -57,7 +59,7 @@ export class UpdateUserComponent {
     this.setRolesFormArray();
     this.roles.forEach((role, index) => {
       const hasRole = this.user.roleDtos.some(userRole => userRole.id == role.id);
-      this.rolesFormArray.at(index).setValue(hasRole); 
+      this.rolesFormArray.at(index).setValue(hasRole);
     });
   }
 
@@ -79,15 +81,15 @@ export class UpdateUserComponent {
       //   for (const [key, value] of (formData as any).entries()) {
       //     console.log(`${key}:`, value);
       // }
-     this.usersService.updateUserById(formData,this.userId).subscribe({
-      next:(res)=>{
-        alert("updated successfully")
-        this.router.navigate(["/admin"]);
-      },
-      error:(error)=>{
-        alert("can't update, please check again")
-      }
-     })
+      this.usersService.updateUserById(formData, this.userId).subscribe({
+        next: (res) => {
+          this.toastrService.success(`user updated successfully`, `User Notification`)
+          this.router.navigate(["/admin"]);
+        },
+        error: (error) => {
+          this.toastrService.error(`can't update user, please check again`, `User Notification`)
+        }
+      })
     }
   }
 

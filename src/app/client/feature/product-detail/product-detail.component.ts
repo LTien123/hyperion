@@ -6,6 +6,7 @@ import { CartItem } from '../../../dto/CartItem';
 import { Product, ProductColorDto, ProductHandlebarDto, ProductMaterialDto } from '../../../dto/Product';
 import { ProductDetail, ProductImageResponse } from '../../../dto/ProductDetail';
 import { DomSanitizer } from '@angular/platform-browser';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-product-detail',
@@ -30,7 +31,7 @@ export class ProductDetailComponent {
   productMaterials: ProductMaterialDto[] = [];
   filteredImages: ProductImageResponse[] = [];
 
-  constructor(private productDetailService: ProductDetailService, private cartService: CartService, private route: ActivatedRoute, private router: Router, private sanitizer:DomSanitizer) { }
+  constructor(private productDetailService: ProductDetailService, private cartService: CartService, private route: ActivatedRoute, private router: Router, private sanitizer:DomSanitizer, private toastrService:ToastrService) { }
 
   ngOnInit(): void {
     this.route.params.subscribe(param => {
@@ -116,9 +117,9 @@ export class ProductDetailComponent {
         amount: this.counter
       };
       this.cartService.addToCart(cartItem)
-      alert("added to cart successfully")
+      this.toastrService.success(`added to cart successfully`, `Cart Notification`)
     } else {
-      alert("error! product is not existed please select again")
+      this.toastrService.error(`can't add to cart, check again`, `User Notification`)
     }
   }
 

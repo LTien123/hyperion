@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ProductCategories } from '../../../../dto/ProductCategories';
 import { Router } from '@angular/router';
 import { ProductService } from '../../../service/product.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-create-sub-category',
@@ -14,7 +15,7 @@ export class CreateSubCategoryComponent implements OnInit {
   subCategoryForm!: FormGroup;
   categories: ProductCategories[] = [];
 
-  constructor(private fb: FormBuilder, private productService: ProductService, private router: Router) {
+  constructor(private fb: FormBuilder, private productService: ProductService, private router: Router, private toastrService:ToastrService) {
     this.subCategoryForm = this.fb.group({
       name: ['', [Validators.required]],
       productCategoryId: ['', Validators.required],
@@ -53,10 +54,10 @@ export class CreateSubCategoryComponent implements OnInit {
         next: (res) => {
           this.isSubmitting = false;
           this.router.navigate(['/admin/product']);
-          alert("created successfully")
+         this.toastrService.success(`created new sub category successfully`,'Sub category notification')
         }, error: () => {
           this.isSubmitting = false;
-          alert("error");
+          this.toastrService.error(`can't create new sub category, check again`, 'Sub category notification')
         }
       })
     }

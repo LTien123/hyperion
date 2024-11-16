@@ -13,8 +13,12 @@ export class OrderService {
   constructor(private http: HttpClient) { }
   private url = enviroment.apiUrl;
 
+
+
   findAllOrders(page:number, size:number): Observable<ApiResponse<PagedResult<Order[]>>> {
-    return this.http.get<ApiResponse<PagedResult<Order[]>>>(`${this.url}/order?page=${page}&size=${size}`);
+    const token = localStorage.getItem('token');
+    const headers = { Authorization: `Bearer ${token}` };
+    return this.http.get<ApiResponse<PagedResult<Order[]>>>(`${this.url}/order?page=${page}&size=${size}`, {headers});
   }
 
   confirmOrder(id:number):Observable<any>{

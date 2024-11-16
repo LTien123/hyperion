@@ -20,9 +20,14 @@ import { CreateSubCategoryComponent } from './feature/product/create-sub-categor
 
 import { UpdateSubCategoryComponent } from './feature/product/update-sub-category/update-sub-category.component';
 import { OrderComponent } from './feature/order/order.component';
+import { AuthGuard } from './guard/auth.guard';
+import { provideHttpClient, withFetch, withInterceptors, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { InjectableRxStompConfig, RxStompService, rxStompServiceFactory } from '@stomp/ng2-stompjs';
+import { myStompConfig } from '../../../stomp.config';
+import { interceptorInterceptor } from '../interceptor.interceptor';
 
 const routes: Routes = [{
-  path: '', component: LayoutComponent, children: [
+  path: '', component: LayoutComponent, canActivate: [AuthGuard], children: [
     { path: 'dashboard', component: DashboardComponent },
     { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
     { path: 'blog', component: BlogComponent },
@@ -35,7 +40,7 @@ const routes: Routes = [{
     { path: 'product/update/:id', component: UpdateProductComponent },
     { path: 'product/update/product-detail/:id', component: UpdateProductDetailComponent },
     { path: 'product/create/product-category', component: CreateCategoryComponent },
-    { path: 'product/update/product-sub-category/:id',component:UpdateSubCategoryComponent},
+    { path: 'product/update/product-sub-category/:id', component: UpdateSubCategoryComponent },
     { path: 'product/create/product-sub-category', component: CreateSubCategoryComponent },
     { path: 'order', component: OrderComponent },
     { path: 'notification', component: NotificationComponent },
@@ -49,6 +54,10 @@ const routes: Routes = [{
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
+  providers: [
+    provideHttpClient(withFetch(), withInterceptors([interceptorInterceptor])),
+    { provide: HTTP_INTERCEPTORS, useFactory: () => interceptorInterceptor, multi: true },
+  ],
   exports: [RouterModule]
 })
 export class AdminRoutingModule { }

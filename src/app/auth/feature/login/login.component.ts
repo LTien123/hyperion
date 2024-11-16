@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { LoginService } from '../../service/login.service';
 import { AuthService } from '../../service/auth.service';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-login',
@@ -11,7 +12,7 @@ import { Router } from '@angular/router';
 })
 export class LoginComponent implements OnInit {
   loginForm!: FormGroup;
-  constructor(private fb: FormBuilder, private loginService: LoginService, private authService: AuthService, private router: Router, private cdr: ChangeDetectorRef) { }
+  constructor(private fb: FormBuilder, private loginService: LoginService, private authService: AuthService, private router: Router, private cdr: ChangeDetectorRef, private toastrService:ToastrService) { }
 
   ngOnInit(): void {
     this.loginForm = this.fb.group({
@@ -31,7 +32,7 @@ export class LoginComponent implements OnInit {
           this.router.navigate(['/admin/dashboard'])
         },
         error: () => {
-          alert("Wrong username or password");
+          this.toastrService.error(`wrong username or password`, `Login Notification`)
 
         }
       }

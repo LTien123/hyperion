@@ -5,22 +5,22 @@
     <div class="dashboard menu" [routerLink]="['dashboard']">
         dashboard
     </div>
-    <div class="blog menu" [routerLink]="['blog']">
+    <div *ngIf="checkScope(['ADMIN','MODERATOR','WRITER']) " class="blog menu" [routerLink]="['blog']">
         blog
     </div>
-    <div class="product menu" [routerLink]="['product']">
+    <div *ngIf="checkScope(['ADMIN','MODERATOR','SALE'])" class="product menu" [routerLink]="['product']">
         product
     </div>
-    <div class="order menu" [routerLink]="['order']">
+    <div *ngIf="checkScope(['ADMIN','MODERATOR','SALE'])" class="order menu" [routerLink]="['order']">
         order
     </div>
-    <div class="notification menu" [routerLink]="['notification']">
+    <div *ngIf="checkScope(['ADMIN','MODERATOR','SALE'])" class="notification menu" [routerLink]="['notification']">
         notification
     </div>
-    <div class="profile menu" [routerLink]="['users']">
+    <div *ngIf="checkScope(['ADMIN','MODERATOR'])" class="profile menu" [routerLink]="['users']">
         users
     </div>
-    <div class="signup menu" [routerLink]="['sign-up']">
+    <div *ngIf="checkScope(['ADMIN','MODERATOR'])" class="signup menu" [routerLink]="['sign-up']">
         sign up
     </div>
     <div class="logout menu" (click)="logout()">

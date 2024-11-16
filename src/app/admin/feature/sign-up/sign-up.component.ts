@@ -3,6 +3,7 @@ import { SignUpService } from '../../../auth/service/sign-up.service';
 import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
 import { Role } from '../../../dto/Role';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-sign-up',
@@ -17,7 +18,8 @@ export class SignUpComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private signUpService: SignUpService,
-    private router: Router
+    private router: Router,
+    private toastrService: ToastrService
   ) {
     this.signUpForm = this.fb.group({
       username: ['', Validators.required],
@@ -58,14 +60,12 @@ export class SignUpComponent implements OnInit {
       // }
       this.signUpService.signUp(formData).subscribe({
         next: (res) => {
-
-          alert("created new user successfully")
+          this.toastrService.success(`user created successfully`,`User Notification`)
           this.isSubmitting = false;
           this.router.navigate(['/admin']);
         },
         error: (error) => {
-
-          alert("error, please create again")
+          this.toastrService.error(`can't create new user, check again`,`User Notification`)
           this.isSubmitting = false;
         }
       })

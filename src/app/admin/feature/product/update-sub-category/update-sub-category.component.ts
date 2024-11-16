@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ProductService } from '../../../service/product.service';
 import { ProductSubCategories } from '../../../../dto/ProductSubCategories';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-update-sub-category',
@@ -16,7 +17,7 @@ export class UpdateSubCategoryComponent {
   thumbnailError: string | null = null;
   productSubCategory!: ProductSubCategories;
   productSubCategoryId!: number;
-  constructor(private fb: FormBuilder, private productService: ProductService, private router: Router, private route: ActivatedRoute) {
+  constructor(private fb: FormBuilder, private productService: ProductService, private router: Router, private route: ActivatedRoute, private toastrService:ToastrService) {
     this.subCategoryForm = this.fb.group({
       name: ['', [Validators.required]],
       thumbnail: [null],
@@ -80,10 +81,10 @@ export class UpdateSubCategoryComponent {
         next: (res) => {
           this.isSubmitting = false;
           this.router.navigate(['/admin/product']);
-          alert("updated successfully");
+          this.toastrService.error(`product sub category updated successfully`,`Product sub category Notification`)
         }, error: () => {
           this.isSubmitting = false;
-          alert("error");
+          this.toastrService.error(`can't update product sub category`,`Product sub category Notification`)
         }
       })
     }

@@ -5,6 +5,7 @@ import { ProductCategories } from '../../../../dto/ProductCategories';
 import { ProductSubCategories } from '../../../../dto/ProductSubCategories';
 import { ProductService } from '../../../service/product.service';
 import { Product } from '../../../../dto/Product';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-update-product',
@@ -18,7 +19,7 @@ export class UpdateProductComponent {
   thumbnailError: string | null = null;
   product!: Product;
   productId!: number;
-  constructor(private fb: FormBuilder, private productService: ProductService, private router: Router, private route: ActivatedRoute) {
+  constructor(private fb: FormBuilder, private productService: ProductService, private router: Router, private route: ActivatedRoute, private toastrService:ToastrService) {
     this.productForm = this.fb.group({
       name: ['', [Validators.required]],
       price: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
@@ -89,10 +90,10 @@ export class UpdateProductComponent {
         next: (res) => {
           this.isSubmitting = false;
           this.router.navigate(['/admin/product']);
-          alert("updated successfully");
+          this.toastrService.success(`product updated successfully`,`Product Notification`)
         }, error: () => {
           this.isSubmitting = false;
-          alert("error");
+          this.toastrService.error(`can't update product`,`Product Notification`)
         }
       })
 

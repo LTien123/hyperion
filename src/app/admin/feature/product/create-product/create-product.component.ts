@@ -4,6 +4,7 @@ import { ProductService } from '../../../service/product.service';
 import { ProductSubCategories } from '../../../../dto/ProductSubCategories';
 import { ProductCategories } from '../../../../dto/ProductCategories';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-create-product',
@@ -18,7 +19,7 @@ export class CreateProductComponent implements OnInit {
   selectedThumbnail: File | null = null;
   thumbnailError: string | null = null;
 
-  constructor(private fb: FormBuilder, private productService: ProductService, private router: Router) { }
+  constructor(private fb: FormBuilder, private productService: ProductService, private router: Router, private toastrService:ToastrService) { }
 
   ngOnInit(): void {
     this.initForm();
@@ -89,7 +90,7 @@ export class CreateProductComponent implements OnInit {
           this.router.navigate(['/admin/product/create/new-product-detail'], { state: { productName: this.productForm.get('name')?.value } });
         }, error: () => {
           this.isSubmitting = false;
-          alert("error");
+          this.toastrService.error(`can't create new product`, 'Product Notification')
         }
       })
 

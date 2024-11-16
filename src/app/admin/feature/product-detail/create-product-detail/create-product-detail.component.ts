@@ -7,6 +7,7 @@ import { Material } from '../../../../dto/Material';
 import { Product } from '../../../../dto/Product';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProductService } from '../../../service/product.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-create-product-detail',
@@ -23,7 +24,7 @@ export class CreateProductDetailComponent {
   isSubmitting = false;
   productId: number | undefined;
 
-  constructor(private fb: FormBuilder, private productService: ProductService, private productDetailService: ProductDetailService, private router: Router, private route: ActivatedRoute) {
+  constructor(private fb: FormBuilder, private productService: ProductService, private productDetailService: ProductDetailService, private router: Router, private route: ActivatedRoute, private toastrService: ToastrService) {
     this.productDetailForm = this.fb.group({
       product: ['', Validators.required],
       colorId: ['', Validators.required],
@@ -148,11 +149,11 @@ export class CreateProductDetailComponent {
         next: (res) => {
           this.isSubmitting = false;
           this.router.navigate(['/admin/product']);
-          alert("product created successfully");
-
+          this.toastrService.success(`product created successfully`, `Product Notification`)
         }, error: (err) => {
           this.isSubmitting = false;
-          alert("error!" + err);
+          this.toastrService.error(`can't create product, check again`, `Product Notification`)
+
         }
       })
 

@@ -4,6 +4,7 @@ import { AuthService } from '../../../auth/service/auth.service';
 import { JwtPayloadDto } from '../../../dto/JwtPayloadDto';
 import { Notification } from '../../../dto/Notification';
 import { Route, Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-notification',
@@ -20,7 +21,7 @@ export class NotificationComponent implements OnInit {
   userInfo: JwtPayloadDto | undefined;
 
   
-  constructor(private notificationService: NotificationService, private authService: AuthService, private router:Router) { }
+  constructor(private notificationService: NotificationService, private authService: AuthService, private router:Router, private toastrService:ToastrService) { }
   ngOnInit(): void {
     this.getAllNotification();
   }
@@ -35,6 +36,9 @@ export class NotificationComponent implements OnInit {
         this.pageAmount = [];
         this.pageAmount = this.getPageAmount();
         console.log(this.allNotification);
+      },
+      error:(err)=>{
+        console.log(err)
       }
     })
   }
@@ -71,7 +75,7 @@ export class NotificationComponent implements OnInit {
         this.changePage(this.targetPage);
         this.targetPage == null;
       } else {
-        alert('please enter correctly');
+        this.toastrService.success(`can't navigate, please check again`, 'Navigate Notification');
       }
   }
 }

@@ -29,6 +29,7 @@ import { NotificationComponent } from './feature/notification/notification.compo
 
 
 
+
 @NgModule({
   declarations: [
     DashboardComponent,
@@ -58,7 +59,7 @@ import { NotificationComponent } from './feature/notification/notification.compo
     AdminRoutingModule,
     FormsModule,
     EditorModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
 })
 export class AdminModule { }

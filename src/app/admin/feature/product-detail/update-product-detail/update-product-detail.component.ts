@@ -8,6 +8,7 @@ import { Product } from '../../../../dto/Product';
 import { ProductDetailService } from '../../../service/product-detail.service';
 import { ProductService } from '../../../service/product.service';
 import { ProductDetail } from '../../../../dto/ProductDetail';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-update-product-detail',
@@ -26,7 +27,7 @@ export class UpdateProductDetailComponent {
   productDetail!: ProductDetail;
 
 
-  constructor(private fb: FormBuilder, private productDetailService: ProductDetailService, private router: Router, private route: ActivatedRoute) {
+  constructor(private fb: FormBuilder, private productDetailService: ProductDetailService, private router: Router, private route: ActivatedRoute, private toastrService: ToastrService) {
     this.productDetailForm = this.fb.group({
       product: ['', Validators.required],
       colorId: ['', Validators.required],
@@ -41,14 +42,10 @@ export class UpdateProductDetailComponent {
   ngOnInit(): void {
     this.route.params.subscribe((param) => {
       this.productDetailId = param['id'];
-      if(this.productDetailId){}
+      if (this.productDetailId) { }
       this.fetchDropdownData();
       this.getProductDetail();
-
-
     })
-
-
   }
 
   getProductDetail() {
@@ -64,8 +61,8 @@ export class UpdateProductDetailComponent {
             stock: this.productDetail.stock,
           })
         },
-        error:()=>{
-          this.router.navigate(['not-found'],{ replaceUrl: true });
+        error: () => {
+          this.router.navigate(['not-found'], { replaceUrl: true });
         }
       })
   }
@@ -86,13 +83,11 @@ export class UpdateProductDetailComponent {
     this.productDetailService.deleteProductImageById(id).subscribe({
       next: (res) => {
         this.isSubmitting = false;
-        alert("deleted successfully")
-        console.log(this.productDetailId);
+        this.toastrService.success(`product image deleted successfully`, `Product image Notification`)
         this.getProductDetail();
-        console.log(this.productDetailForm.get('product')?.value)
       },
       error: () => {
-        alert("can't delete, check again")
+        this.toastrService.error(`can't delete image, check again`, `Product Image Notification`)
         this.isSubmitting = false;
       }
     })
@@ -145,15 +140,16 @@ export class UpdateProductDetailComponent {
         });
       }
 
-      this.productDetailService.updateProductDetailById(this.productDetailId,formData).subscribe({
+      this.productDetailService.updateProductDetailById(this.productDetailId, formData).subscribe({
         next: (res) => {
           this.isSubmitting = false;
           this.router.navigate(['/admin/product']);
-          alert("product updated successfully");
+          this.toastrService.success(`product detail updated successfully`,`Product detail Notification`)
+
 
         }, error: (err) => {
           this.isSubmitting = false;
-          alert("error!" + err);
+          this.toastrService.error(`can't update, check again`,`Product detail Notification`)
         }
       })
 

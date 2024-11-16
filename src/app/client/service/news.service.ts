@@ -5,6 +5,7 @@ import { ApiResponse } from '../../dto/ApiResponse';
 import { Observable } from 'rxjs';
 import { Blogs } from '../../dto/Blog';
 import { enviroment } from '../../enviroment/enviroment';
+import { BlogCategories } from '../../dto/BlogCategories';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,11 @@ export class NewsService {
   constructor(private http: HttpClient) { }
   private url = enviroment.apiUrl;
 
-  getAllNews(page:number, size:number): Observable<ApiResponse<PagedResult<Blogs[]>>> {
-    return this.http.get<ApiResponse<PagedResult<Blogs[]>>>(`${this.url}/blog?blogCategoryId=1&page=${page}&size=${size}`);
+  getAllNews(blogId:number,page:number, size:number): Observable<ApiResponse<PagedResult<Blogs[]>>> {
+    return this.http.get<ApiResponse<PagedResult<Blogs[]>>>(`${this.url}/blog?blogCategoryId=${blogId}&page=${page}&size=${size}`);
+  }
+
+  getAllBlogCategories(): Observable<ApiResponse<BlogCategories[]>> {
+    return this.http.get<ApiResponse<BlogCategories[]>>(`${this.url}/blog-categories`);
   }
 }

@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { BlogService } from '../../service/blog.service';
 import { Blogs } from '../../../dto/Blog';
+import { ToastrService } from 'ngx-toastr';
+import { JwtPayloadDto } from '../../../dto/JwtPayloadDto';
+import { AuthService } from '../../../auth/service/auth.service';
 
 @Component({
   selector: 'app-blog',
@@ -8,16 +11,18 @@ import { Blogs } from '../../../dto/Blog';
   styleUrl: './blog.component.scss'
 })
 export class BlogComponent implements OnInit {
+  userInfo: JwtPayloadDto | undefined;
   currentPage: number = 1;
   pageSize: number = 9;
   allBlogs: Blogs[] | undefined;
   pageAmount: number[] = [];
   totalPages: number | undefined;
   targetPage: number | undefined;
-  constructor(private blogService: BlogService) { }
+  constructor(private blogService: BlogService, private toastrService: ToastrService, private authService: AuthService) { }
 
   ngOnInit(): void {
     this.getAllBlogs()
+    this.getUserInfo()
   }
 
   getAllBlogs() {
@@ -32,14 +37,23 @@ export class BlogComponent implements OnInit {
     })
   }
 
+  getUserInfo() {
+    this.userInfo = this.authService.getUserInfo();
+    this.userInfo?.scope
+  }
+
+  checkScope(roles: string[]): boolean {
+    return roles.some(role => this.userInfo?.scope.includes(role))
+  }
+
   deleteBlogById(id: number) {
     this.blogService.deleteBlogById(id).subscribe({
       next: (res) => {
-        alert("deleted successfully");
+        this.toastrService.success(`deleted successfully`, 'Blog Notification');
         this.getAllBlogs();
       },
       error: () => {
-        alert("can't delete, check again");
+        this.toastrService.success(`can't delete, check again`, 'Blog Notification');
       }
     })
   }
@@ -64,17 +78,19 @@ export class BlogComponent implements OnInit {
         this.changePage(this.targetPage);
         this.targetPage == null;
       } else {
-        alert('please enter correctly');
+        this.toastrService.error(`can't navigate, please enter again`, 'navigate Notification');
       }
   }
 
   setCarousel(id: number) {
     this.blogService.setCarousel(id).subscribe({
       next: () => {
-        alert("carousel has been set")
+        console.log('done');
+        this.toastrService.success('Carousel set successfully', 'Carousel Notification');
       },
-      error: () => {
-        alert("can't set carousel, check again");
+      error: (err) => {
+        console.error("Error setting carousel:", err);
+        this.toastrService.error(`can't set carousel, please check again`, 'Carousel Notification');
       }
     })
   }

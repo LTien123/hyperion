@@ -1,11 +1,8 @@
 <div class="warpper">
     <div class="header d-flex justify-content-between ">
         <h1>ALL BLOG</h1>
-        <div class="search">
-            <input type="search" name="" id="">
-
-        </div>
-        <button class="create" [routerLink]='["create"]'>
+        
+        <button *ngIf="checkScope(['ADMIN','SALE'])" class="create" [routerLink]='["create"]'>
             create new
         </button>
 

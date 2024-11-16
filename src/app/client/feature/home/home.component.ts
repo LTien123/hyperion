@@ -36,9 +36,16 @@ export class HomeComponent implements OnInit {
       //get News
       this.blogCategories = res.result;
       const newsId = this.blogCategories.find(item => item.name === "News")?.id;
+      console.log(newsId)
       if (newsId) {
-        this.homeService.getAllBlogs(newsId, this.blogCurrentPage, this.blogPageSize).subscribe((res) => {
-          this.news = res.result.content.filter(item => item.blogCategoryDto.name == "News");
+        this.homeService.getAllBlogs(newsId, this.blogCurrentPage, this.blogPageSize).subscribe({
+          next:(res) => {
+            console.log(res)
+            this.news = res.result.content.filter(item => item.blogCategoryDto.name == "News");
+          },
+          error:(err)=>{
+            console.log(err)
+          }
         })
       }
     })
