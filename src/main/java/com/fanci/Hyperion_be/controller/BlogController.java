@@ -20,7 +20,7 @@ public class BlogController {
     @GetMapping
     public ApiResponse<Page<BlogResponse>> findAllBlogsByBlogCategoryIdWithPagination(@RequestParam Long blogCategoryId, @RequestParam int page, @RequestParam int size) {
         return ApiResponse.<Page<BlogResponse>>builder()
-                .result(blogService.findAllBlogsWithPagination(blogCategoryId, page, size))
+                .result(blogService.findAllBlogsWithPaginationByBlogCategoryId(blogCategoryId, page, size))
                 .build();
     }
 

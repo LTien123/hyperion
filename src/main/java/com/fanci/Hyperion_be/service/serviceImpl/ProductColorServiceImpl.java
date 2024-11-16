@@ -6,6 +6,7 @@ import com.fanci.Hyperion_be.mapper.ProductColorMapper;
 import com.fanci.Hyperion_be.repository.ProductColorRepository;
 import com.fanci.Hyperion_be.service.ProductColorService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,6 +22,7 @@ public class ProductColorServiceImpl implements ProductColorService {
     }
 
     @Override
+    @PreAuthorize("hasAnyRole('ADMIN','SALE')")
     public ProductColorResponse addNewColor(CreateNewProductColorRequest request) {
         var productColor = productColorMapper.toProductColor(request);
         return productColorMapper.toProductColorResponse(productColorRepository.save(productColor));

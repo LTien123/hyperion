@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -53,6 +54,7 @@ public class ProductSubCategoryServiceImpl implements ProductSubCategoryService 
     }
 
     @Override
+    @PreAuthorize("hasAnyRole('ADMIN','SALE')")
     public ProductSubCategoryResponse addNewProductSubCategory(CreateNewProductSubCategoryRequest request) throws IOException {
         ProductSubCategory productSubCategory = productSubCategoryMapper.toSubcategory(request);
         var category = productCategoryRepository.findById(request.getProductCategoryId()).orElseThrow(() -> new AppException(ErrorCode.CATEGORY_ID_NOT_FOUND));
@@ -63,6 +65,7 @@ public class ProductSubCategoryServiceImpl implements ProductSubCategoryService 
     }
 
     @Override
+    @PreAuthorize("hasAnyRole('ADMIN','MODERATOR','SALE')")
     public ProductSubCategoryResponse updateProductSubCategoryById(UpdateSubCategoryRequest request, Long id) throws IOException {
         ProductSubCategory productSubCategory = productSubCategoryRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.PRODUCT_SUB_CATEGORY_ID_NOT_FOUND));
         productSubCategoryMapper.updateProductSubCategoryByRequest(request, productSubCategory);
@@ -76,6 +79,7 @@ public class ProductSubCategoryServiceImpl implements ProductSubCategoryService 
     }
 
     @Override
+    @PreAuthorize("hasAnyRole('ADMIN','MODERATOR','SALE')")
     public void deleteProductSubCategoryById(Long id) {
         ProductSubCategory productSubCategory = productSubCategoryRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.PRODUCT_SUB_CATEGORY_ID_NOT_FOUND));
         productSubCategory.setIsActive(false);

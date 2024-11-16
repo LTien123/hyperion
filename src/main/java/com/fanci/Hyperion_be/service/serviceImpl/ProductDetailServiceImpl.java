@@ -12,6 +12,7 @@ import com.fanci.Hyperion_be.repository.*;
 import com.fanci.Hyperion_be.service.ProductDetailService;
 import com.fanci.Hyperion_be.service.ProductImageService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -43,6 +44,7 @@ public class ProductDetailServiceImpl implements ProductDetailService {
     }
 
     @Override
+    @PreAuthorize("hasAnyRole('ADMIN','SALE')")
     public ProductDetailResponse addNewProductDetailByProductName(CreateNewProductDetailRequest request) throws IOException {
         //create product detail
         ProductDetail productDetail = productDetailMapper.toProductDetail(request);
@@ -92,6 +94,7 @@ public class ProductDetailServiceImpl implements ProductDetailService {
     }
 
     @Override
+    @PreAuthorize("hasAnyRole('ADMIN','MODERATOR','SALE')")
     public ProductDetailResponse updateProductDetailById(Long id, UpdateProductDetailRequest request) throws IOException {
         var productDetail = productDetailRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.PRODUCT_DETAIL_ID_NOT_FOUND));
         productDetailMapper.updateProductDetail(request,productDetail);
@@ -138,6 +141,7 @@ public class ProductDetailServiceImpl implements ProductDetailService {
     }
 
     @Override
+    @PreAuthorize("hasAnyRole('ADMIN','MODERATOR','SALE')")
     public void deleteProductDetailById(Long id) {
         var productDetail = productDetailRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.PRODUCT_DETAIL_ID_NOT_FOUND));
         productDetail.setActive(false);

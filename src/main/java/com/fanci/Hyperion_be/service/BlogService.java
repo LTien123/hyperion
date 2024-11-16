@@ -6,11 +6,10 @@ import com.fanci.Hyperion_be.dto.response.BlogResponse;
 import org.springframework.data.domain.Page;
 
 import java.io.IOException;
-import java.util.List;
 
 public interface BlogService {
 
-    Page<BlogResponse> findAllBlogsWithPagination(Long blockCategoryId, int page, int size);
+    Page<BlogResponse> findAllBlogsWithPaginationByBlogCategoryId(Long blockCategoryId, int page, int size);
 
     BlogResponse findBlogById(Long id);
 

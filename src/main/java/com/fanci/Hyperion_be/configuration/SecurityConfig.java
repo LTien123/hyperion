@@ -6,7 +6,9 @@ import com.fanci.Hyperion_be.exception.ErrorCode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -29,7 +31,10 @@ import java.util.List;
 @EnableWebMvc
 public class SecurityConfig {
     private final JwtDecoder jwtDecoder;
-//    private final String[] PUBLIC_ENDPOINTS = {"/auth/token", "/auth/introspect", "auth/logout", "/auth/refresh", "/user", "/image", "/product", "/product/page"};
+    private final String[] PUBLIC_ENDPOINTS = {"/auth/login", "/auth/introspect", "auth/logout", "/auth/refresh", "/payment-method",
+            "/notification/set-to-read/**", "/notification/**", "/paypal", "order/**", "/order", "/image/**", "/material", "/handlebar", "/color"
+            , "/blog/all", "/blog", "/blog/**", "/product-sub-categories", "/product-sub-categories/**", "/product-categories", "/product-categories/all", "/product/name", "/product/**",
+            "/product/name", "/product-detail", "/product-detail/**", "blog-categories", "/blog/carousel", "/ws-notifications/websocket", "/order/pending/**"};
 
     public SecurityConfig(JwtDecoder jwtDecoder) {
         this.jwtDecoder = jwtDecoder;
@@ -38,13 +43,10 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.authorizeHttpRequests(request ->
-//                request.requestMatchers(HttpMethod.POST, PUBLIC_ENDPOINTS)
-//                .permitAll()
-//                .requestMatchers(HttpMethod.GET, PUBLIC_ENDPOINTS)
-//                .permitAll()
-//                .anyRequest().authenticated());
-                        request.anyRequest().permitAll()
-        );
+                request.requestMatchers(PUBLIC_ENDPOINTS)
+                        .permitAll()
+                        .anyRequest().authenticated());
+
 
         httpSecurity.oauth2ResourceServer(oauth2 -> oauth2.jwt(jwtConfigurer -> jwtConfigurer.decoder(jwtDecoder)
                 .jwtAuthenticationConverter(jwtAuthenticationConverter())).authenticationEntryPoint((request, response, authException) -> {
@@ -62,7 +64,7 @@ public class SecurityConfig {
         httpSecurity.csrf(AbstractHttpConfigurer::disable);
         httpSecurity.cors(httpSecurityCorsConfigurer -> {
             CorsConfiguration corsConfiguration = new CorsConfiguration();
-            corsConfiguration.setAllowedOrigins(List.of("http://localhost:4200/"));
+            corsConfiguration.setAllowedOrigins(List.of("http://localhost:4200"));
             corsConfiguration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
             corsConfiguration.setAllowedHeaders(Arrays.asList("authorization", "content-type", "x-auth-token"));
             corsConfiguration.setExposedHeaders(List.of("x-auth-token"));

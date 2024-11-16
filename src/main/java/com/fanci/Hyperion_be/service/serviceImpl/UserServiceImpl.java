@@ -12,6 +12,7 @@ import com.fanci.Hyperion_be.repository.RoleRepository;
 import com.fanci.Hyperion_be.repository.UserRepository;
 import com.fanci.Hyperion_be.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -34,17 +35,20 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
 
     @Override
+    @PreAuthorize("hasAnyRole('ADMIN','MODERATOR')")
     public List<UserResponse> findAllUser() {
         return userRepository.findAll().stream().map(this::toUserResponse).toList();
     }
 
     @Override
+    @PreAuthorize("hasAnyRole('ADMIN','MODERATOR')")
     public UserResponse findUserById(Long id) {
         User user = userRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.ROLE_ID_NOT_FOUND));
         return toUserResponse(user);
     }
 
     @Override
+    @PreAuthorize("hasAnyRole('ADMIN','MODERATOR')")
     public UserResponse addNewUser(CreateNewUserRequest request) throws IOException {
         if (!request.getPassword().equals(request.getRePassword())) {
             throw new AppException(ErrorCode.PASSWORD_NOT_MATCH);
@@ -69,6 +73,7 @@ public class UserServiceImpl implements UserService {
         return toUserResponse(userRepository.save(user));
     }
     @Override
+    @PreAuthorize("hasAnyRole('ADMIN','MODERATOR')")
     public UserResponse updateUser(UpdateUserRequest request, Long id) throws IOException {
         User user = userRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.USER_ID_NOT_FOUND));
         userMapper.updateUser(request, user);
@@ -81,6 +86,7 @@ public class UserServiceImpl implements UserService {
         return toUserResponse(userRepository.save(user));
     }
     @Override
+    @PreAuthorize("hasAnyRole('ADMIN','MODERATOR')")
     public void deleteUser(Long id) {
         User user = userRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.USER_ID_NOT_FOUND));
         user.setIsActive(false);

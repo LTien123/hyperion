@@ -18,6 +18,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -37,7 +38,7 @@ public class BlogServiceImpl implements BlogService {
     private final UploadService uploadService;
 
     @Override
-    public Page<BlogResponse> findAllBlogsWithPagination(Long blogCategoryId, int page, int size) {
+    public Page<BlogResponse> findAllBlogsWithPaginationByBlogCategoryId(Long blogCategoryId, int page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
         return blogRepository.findAllBlogsByBlogCategoryIdWithPagination(blogCategoryId, pageable).map(this::toBlogResponse);
     }
@@ -62,6 +63,7 @@ public class BlogServiceImpl implements BlogService {
     }
 
     @Override
+    @PreAuthorize("hasAnyRole('ADMIN', 'WRITER')")
     public BlogResponse addNewBlog(CreateNewBlogRequest request) throws IOException {
         var user = userRepository.findById(request.getUserId()).orElseThrow(() -> new AppException(ErrorCode.USER_ID_NOT_FOUND));
         var blogCategory = blogCategoryRepository.findById(request.getBlogCategoryId()).orElseThrow(() -> new AppException(ErrorCode.BLOG_CATEGORY_ID_NOT_FOUND));
@@ -77,6 +79,7 @@ public class BlogServiceImpl implements BlogService {
 
 
     @Override
+    @PreAuthorize("hasAnyRole('ADMIN', 'WRITER')")
     public BlogResponse changeCarousel(Long id) {
         var blog = blogRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.BLOG_ID_NOT_FOUND));
         blog.setCarouselAt(LocalDateTime.now());
@@ -90,6 +93,7 @@ public class BlogServiceImpl implements BlogService {
     }
 
     @Override
+    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR', 'WRITER')")
     public BlogResponse updateBlogById(Long blogId, UpdateBlogRequest request) throws IOException {
         var blog = blogRepository.findById(blogId).orElseThrow(() -> new AppException(ErrorCode.BLOG_ID_NOT_FOUND));
         blogMapper.updateBlogFromRequest(request, blog);
@@ -102,6 +106,7 @@ public class BlogServiceImpl implements BlogService {
     }
 
     @Override
+    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR', 'WRITER')")
     public void deleteBlogById(Long blogId) {
         var blog = blogRepository.findById(blogId).orElseThrow(() -> new AppException(ErrorCode.BLOG_ID_NOT_FOUND));
         blog.setIsActive(false);

@@ -13,6 +13,7 @@ import com.fanci.Hyperion_be.repository.PermissionRepository;
 import com.fanci.Hyperion_be.repository.RoleRepository;
 import com.fanci.Hyperion_be.service.RoleService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,11 +30,13 @@ public class RoleServiceImpl implements RoleService {
     private final PermissionMapper permissionMapper;
 
     @Override
+    @PreAuthorize("hasAnyRole('ADMIN','MODERATOR','SALE')")
     public List<RoleResponse> findAllRole() {
         return roleRepository.findAll().stream().map(this::toRoleResponse).toList();
     }
 
     @Override
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public RoleResponse addNewRole(CreateNewRoleRequest request) {
         if (roleRepository.findRoleByRoleName(request.getRoleName()).isPresent()) {
             throw new AppException(ErrorCode.ROLE_NAME_DUPLICATED);

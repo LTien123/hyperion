@@ -11,6 +11,7 @@ import com.fanci.Hyperion_be.mapper.ProductImageMapper;
 import com.fanci.Hyperion_be.repository.ProductImageRepository;
 import com.fanci.Hyperion_be.service.ProductImageService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -38,28 +39,22 @@ public class ProductImageServiceImpl implements ProductImageService {
         }
 
         List<ProductImage> productImages = new ArrayList<>();
-
-        // Lặp qua các hình ảnh và tải lên Cloudinary
         for (MultipartFile image : images) {
             Map<String, Object> uploadResult = cloudinary.uploader().upload(image.getBytes(), ObjectUtils.emptyMap());
             String url = uploadResult.get("url").toString();
             String publicId = uploadResult.get("public_id").toString();
 
-            // Tạo đối tượng ProductImage
             ProductImage productImage = ProductImage.builder()
                     .url(url)
                     .publicId(publicId)
                     .productDetail(productDetail)
                     .build();
 
-            // Thêm vào danh sách thay vì lưu ngay
             productImages.add(productImage);
         }
 
-        // Sử dụng saveAll để lưu tất cả các đối tượng một lần
         List<ProductImage> savedProductImages = productImageRepository.saveAll(productImages);
 
-        // Chuyển đổi danh sách thành ProductImageResponse và trả về
         return savedProductImages.stream()
                 .map(this::toProductImageResponse)
                 .toList();

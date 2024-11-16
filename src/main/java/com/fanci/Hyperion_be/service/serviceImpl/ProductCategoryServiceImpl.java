@@ -19,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -65,6 +66,7 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
 
 
     @Override
+    @PreAuthorize("hasAnyRole('ADMIN','SALE')")
     public ProductCategoryResponseSimple addNewProductCategory(CreateNewProductCategoryRequest request) {
         ProductCategory productCategory = productCategoryMapper.toProductCategory(request);
         productCategory.setIsActive(true);
@@ -72,6 +74,7 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
     }
 
     @Override
+    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR','SALE')")
     public void deleteProductCategory(Long id) {
         ProductCategory productCategory = productCategoryRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.PRODUCT_CATEGORY_ID_NOT_FOUND));
         productCategory.setIsActive(false);

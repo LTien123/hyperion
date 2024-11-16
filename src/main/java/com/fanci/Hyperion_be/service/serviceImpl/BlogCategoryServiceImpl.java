@@ -7,6 +7,7 @@ import com.fanci.Hyperion_be.mapper.BlogCategoryMapper;
 import com.fanci.Hyperion_be.repository.BlogCategoryRepository;
 import com.fanci.Hyperion_be.service.BlogCategoryService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.Set;
@@ -24,6 +25,7 @@ public class BlogCategoryServiceImpl implements BlogCategoryService {
     }
 
     @Override
+    @PreAuthorize("hasAnyRole('ADMIN', 'WRITER')")
     public BlogCategoryResponse addNewBlogCategory(CreateNewBlogCategoryRequest request) {
         BlogCategory blogCategory = blogCategoryMapper.toBlogCategory(request);
         return blogCategoryMapper.toBlogCategoryResponse(blogCategoryRepository.save(blogCategory));

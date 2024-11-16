@@ -29,8 +29,8 @@ public class PaypalService {
 
         ApplicationContext applicationContext = new ApplicationContext()
                 .brandName("Hyperion")
-                .landingPage("BILLING")  // Chuyển trang sau khi thanh toán
-                .returnUrl("http://localhost:4200/payment/"+orderId);  // Địa chỉ trả về sau khi thanh toán thành công
+                .landingPage("BILLING")
+                .returnUrl("http://localhost:4200/payment/"+orderId);
         orderRequest.applicationContext(applicationContext);
 
         // Thêm thông tin thanh toán
@@ -42,15 +42,15 @@ public class PaypalService {
 
         orderRequest.purchaseUnits(Collections.singletonList(purchaseUnitRequest));
 
-        // Tạo yêu cầu gửi đi
+
         OrdersCreateRequest request = new OrdersCreateRequest().requestBody(orderRequest);
 
-        // Gửi yêu cầu tới PayPal để tạo đơn hàng
+
         HttpResponse<Order> response = payPalHttpClient.execute(request);
 
         Order order = response.result();
 
-        // Trả về đơn hàng vừa tạo
+
         return order.links().stream()
                 .filter(link -> link.rel().equals("approve"))
                 .findFirst()

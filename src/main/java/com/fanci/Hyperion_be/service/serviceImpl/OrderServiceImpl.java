@@ -23,6 +23,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -50,6 +51,7 @@ public class OrderServiceImpl implements OrderService {
 
 
     @Override
+    @PreAuthorize("hasAnyRole('ADMIN', 'MODERATOR','SALE')")
     public Page<OrderResponse> findAllOrders(int page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id"));
         return orderRepository.findAll(pageable).map(this::toOrderResponse);
@@ -139,6 +141,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
+    @PreAuthorize("hasAnyRole('ADMIN', 'SALE')")
     public OrderResponse confirmOrderById(Long id) {
         Orders order = orderRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.ORDER_ID_NOT_FOUND));
         order.setStatus(OrderStatus.CONFIRMED);
@@ -161,6 +164,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @PreAuthorize("hasAnyRole('ADMIN','SALE')")
     public OrderResponse denyOrderById(Long id) {
         Orders order = orderRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.ORDER_ID_NOT_FOUND));
         order.setStatus(OrderStatus.DENIED);
